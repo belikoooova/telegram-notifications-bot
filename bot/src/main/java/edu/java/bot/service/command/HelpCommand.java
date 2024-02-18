@@ -9,8 +9,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HelpCommand implements Command {
-    @Autowired private List<Command> commands;
-    @Autowired private UserStateService userStateService;
+    private final List<Command> commands;
+    private final UserStateService userStateService;
+
+    @Autowired
+    public HelpCommand(List<Command> commands, UserStateService userStateService) {
+        this.userStateService = userStateService;
+        this.commands = commands;
+    }
 
     @Override
     public String command() {

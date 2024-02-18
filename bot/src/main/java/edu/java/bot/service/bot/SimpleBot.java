@@ -55,6 +55,5 @@ public class SimpleBot implements Bot {
     @PreDestroy
     @Override
     public void close() {
-
     }
 }

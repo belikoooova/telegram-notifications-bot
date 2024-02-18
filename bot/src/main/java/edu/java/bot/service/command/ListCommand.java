@@ -10,8 +10,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ListCommand implements Command {
-    @Autowired private LinkRepository links;
-    @Autowired private UserStateService userStateService;
+    private final LinkRepository links;
+    private final UserStateService userStateService;
+
+    @Autowired
+    public ListCommand(LinkRepository links, UserStateService userStateService) {
+        this.links = links;
+        this.userStateService = userStateService;
+    }
 
     @Override
     public String command() {

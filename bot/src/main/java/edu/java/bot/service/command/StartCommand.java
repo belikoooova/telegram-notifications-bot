@@ -8,12 +8,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StartCommand implements Command {
+    private final UserStateService userStateService;
+
+    @Autowired
+    public StartCommand(UserStateService userStateService) {
+        this.userStateService = userStateService;
+    }
+
     @Override
     public String command() {
         return CommandTitle.START.toString();
     }
-
-    @Autowired private UserStateService userStateService;
 
     @Override
     public String description() {

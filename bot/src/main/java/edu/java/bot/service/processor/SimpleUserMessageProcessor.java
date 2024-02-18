@@ -9,7 +9,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SimpleUserMessageProcessor implements UserMessageProcessor {
-    @Autowired private List<Command> commands;
+    private final List<Command> commands;
+
+    @Autowired
+    public SimpleUserMessageProcessor(List<Command> commands) {
+        this.commands = commands;
+    }
 
     @Override
     public List<? extends Command> commands() {

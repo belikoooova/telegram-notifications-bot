@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class InMemoryLinkRepository implements LinkRepository {
-    Map<LinkRepositoryKey, Link> getLinkByUrl = new HashMap<>();
+    private Map<LinkRepositoryKey, Link> getLinkByUrl = new HashMap<>();
 
     @Override
     public Optional<Link> findById(LinkRepositoryKey key) {

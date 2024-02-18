@@ -14,13 +14,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class TrackCommand implements Command {
     private boolean isAwaiting = false;
-    private LinkRepository linkRepository;
-    @Autowired private UserStateService userStateService;
-    @Autowired private LinkFactory linkFactory;
+    private final LinkRepository linkRepository;
+    private final UserStateService userStateService;
+    private final LinkFactory linkFactory;
 
     @Autowired
-    public TrackCommand(LinkRepository linkRepository) {
+    public TrackCommand(LinkRepository linkRepository, UserStateService userStateService, LinkFactory linkFactory) {
         this.linkRepository = linkRepository;
+        this.userStateService = userStateService;
+        this.linkFactory = linkFactory;
     }
 
     @Override

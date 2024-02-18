@@ -14,8 +14,11 @@ import org.springframework.stereotype.Service;
 public class SimpleLinkFactory implements LinkFactory {
     @Override
     public Link create(Long userId, String urlString) throws URISyntaxException {
-        Link link = new Link(createKey(userId, urlString));
+        LinkRepositoryKey key = createKey(userId, urlString);
+        Link link = new Link(key);
         link.setUrl(new URI(urlString));
+        link.setResource(key.resource());
+        link.setIdOnResource(key.idOnResource());
         return link;
     }
 
