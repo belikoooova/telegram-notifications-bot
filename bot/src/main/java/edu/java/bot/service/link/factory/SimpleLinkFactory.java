@@ -51,10 +51,7 @@ public class SimpleLinkFactory implements LinkFactory {
 
             int responseCode = connection.getResponseCode();
             connection.disconnect();
-            if (responseCode / MODULO == OK_CODE) {
-                return true;
-            }
-            return false;
+            return responseCode / MODULO == OK_CODE;
         } catch (Exception e) {
             return false;
         }
