@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SimpleLinkFactory implements LinkFactory {
+    private static final int MODULO = 100;
+    private static final int OK_CODE = 2;
+
     @Override
     public Link create(Long userId, String urlString) throws URISyntaxException {
         LinkRepositoryKey key = createKey(userId, urlString);
@@ -48,7 +51,7 @@ public class SimpleLinkFactory implements LinkFactory {
 
             int responseCode = connection.getResponseCode();
             connection.disconnect();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
+            if (responseCode / MODULO == OK_CODE) {
                 return true;
             }
             return false;
