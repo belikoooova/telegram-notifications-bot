@@ -27,6 +27,7 @@
         <!-- Other -->
         <jetbrains-annotations.version>24.1.0</jetbrains-annotations.version>
         <java-telegram-bot-api.version>7.0.1</java-telegram-bot-api.version>
+        <javax.persistence.version>2.2</javax.persistence.version>
 
         <!-- Tests -->
         <testcontainers.version>1.19.4</testcontainers.version>
@@ -42,7 +43,7 @@
 
         <!-- Linters -->
         <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
-        <checkstyle.version>10.12.7</checkstyle.version>
+        <checkstyle.version>10.13.0</checkstyle.version>
     </properties>
 
     <modules>
@@ -117,6 +118,17 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <!-- Repo -->
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>${javax.persistence.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
     </dependencies>
 
