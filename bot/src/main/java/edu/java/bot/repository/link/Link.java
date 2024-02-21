@@ -1,6 +1,6 @@
-package edu.java.bot.service.link;
+package edu.java.bot.repository.link;
 
-import edu.java.bot.service.link.repository.LinkRepositoryKey;
+import edu.java.bot.repository.link.repository.LinkRepositoryKey;
 import java.net.URI;
 import javax.persistence.Entity;
 import javax.persistence.Id;

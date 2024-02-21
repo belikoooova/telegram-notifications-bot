@@ -5,11 +5,10 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.service.command.CommandHumanReadableMessage;
 import edu.java.bot.service.command.ListCommand;
-import edu.java.bot.service.link.Link;
-import edu.java.bot.service.link.repository.LinkRepository;
-import edu.java.bot.service.user.state.UserStateService;
+import edu.java.bot.repository.link.Link;
+import edu.java.bot.repository.link.repository.LinkRepository;
+import edu.java.bot.repository.user.state.UserRepository;
 import java.net.URI;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -32,7 +31,7 @@ class ListCommandTest {
     private LinkRepository linkRepository;
 
     @Mock
-    private UserStateService userStateService;
+    private UserRepository userRepository;
 
     @InjectMocks
     private ListCommand listCommand;
@@ -44,8 +43,8 @@ class ListCommandTest {
     @BeforeEach
     void setUp() {
         linkRepository = mock(LinkRepository.class);
-        userStateService = mock(UserStateService.class);
-        listCommand = new ListCommand(linkRepository, userStateService);
+        userRepository = mock(UserRepository.class);
+        listCommand = new ListCommand(linkRepository, userRepository);
 
         when(update.message()).thenReturn(message);
         when(message.chat()).thenReturn(chat);
@@ -61,10 +60,10 @@ class ListCommandTest {
 
         SendMessage result = listCommand.handle(update);
 
-        verify(userStateService).clearUserState(USER_ID);
+        verify(userRepository).clearUserState(USER_ID);
         Assertions.assertEquals(CHAT_ID, result.getParameters().get("chat_id"));
         Assertions.assertEquals(
-            CommandHumanReadableMessage.LIST_THERE_ARE_NO_LINKS.toString(),
+            "Sorry, the list of tracked links is empty.",
             result.getParameters().get("text")
         );
     }
@@ -81,12 +80,12 @@ class ListCommandTest {
 
         SendMessage result = listCommand.handle(update);
 
-        verify(userStateService).clearUserState(USER_ID);
+        verify(userRepository).clearUserState(USER_ID);
         Assertions.assertEquals(CHAT_ID, result.getParameters().get("chat_id"));
-        String expectedText = CommandHumanReadableMessage.LIST_BEGIN_OF_THE_ANSWER.toString() +
-            CommandHumanReadableMessage.LIST_COMMANDS_SEPARATOR +
+        String expectedText = "Here are the links I am tracking:" +
+            "\n- " +
             "http://example1.com" +
-            CommandHumanReadableMessage.LIST_COMMANDS_SEPARATOR +
+            "\n- " +
             "http://example2.com";
         Assertions.assertEquals(expectedText, result.getParameters().get("text"));
     }

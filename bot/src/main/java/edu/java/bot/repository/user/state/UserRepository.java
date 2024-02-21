@@ -1,6 +1,6 @@
-package edu.java.bot.service.user.state;
+package edu.java.bot.repository.user.state;
 
-public interface UserStateService {
+public interface UserRepository {
     void setUserState(Long userId, UserState state);
 
     UserState getUserState(Long userId);

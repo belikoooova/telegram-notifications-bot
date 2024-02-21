@@ -1,6 +1,6 @@
-package edu.java.bot.service.user;
+package edu.java.bot.repository.user;
 
-import edu.java.bot.service.user.state.UserState;
+import edu.java.bot.repository.user.state.UserState;
 import jakarta.persistence.Entity;
 import javax.persistence.Id;
 

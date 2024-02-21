@@ -1,8 +1,8 @@
 package edu.java.bot;
 
-import edu.java.bot.service.link.Link;
-import edu.java.bot.service.link.LinkResource;
-import edu.java.bot.service.link.factory.SimpleLinkFactory;
+import edu.java.bot.repository.link.Link;
+import edu.java.bot.repository.link.LinkResource;
+import edu.java.bot.repository.link.factory.SimpleLinkFactory;
 import java.net.URISyntaxException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

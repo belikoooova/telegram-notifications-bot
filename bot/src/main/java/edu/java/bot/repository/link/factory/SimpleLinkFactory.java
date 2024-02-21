@@ -1,20 +1,19 @@
-package edu.java.bot.service.link.factory;
+package edu.java.bot.repository.link.factory;
 
-import edu.java.bot.service.link.Link;
-import edu.java.bot.service.link.LinkResource;
-import edu.java.bot.service.link.repository.LinkRepositoryKey;
+import edu.java.bot.repository.link.Link;
+import edu.java.bot.repository.link.LinkResource;
+import edu.java.bot.repository.link.repository.LinkRepositoryKey;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.regex.Matcher;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SimpleLinkFactory implements LinkFactory {
-    private static final int MODULO = 100;
-    private static final int OK_CODE = 2;
-
     @Override
     public Link create(Long userId, String urlString) throws URISyntaxException {
         LinkRepositoryKey key = createKey(userId, urlString);
@@ -46,14 +45,24 @@ public class SimpleLinkFactory implements LinkFactory {
             URI uri = new URI(urlString);
             URL url = uri.toURL();
 
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            return isOkConnection(url);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean isOkConnection(URL url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        try {
             connection.setRequestMethod("GET");
 
             int responseCode = connection.getResponseCode();
-            connection.disconnect();
-            return responseCode / MODULO == OK_CODE;
+
+            return HttpStatus.valueOf(responseCode).is2xxSuccessful();
         } catch (Exception e) {
             return false;
+        } finally {
+            connection.disconnect();
         }
     }
 

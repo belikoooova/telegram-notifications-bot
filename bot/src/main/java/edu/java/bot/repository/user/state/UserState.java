@@ -1,4 +1,4 @@
-package edu.java.bot.service.user.state;
+package edu.java.bot.repository.user.state;
 
 public enum UserState {
     NONE,

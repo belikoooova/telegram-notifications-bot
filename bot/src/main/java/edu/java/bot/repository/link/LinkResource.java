@@ -1,4 +1,4 @@
-package edu.java.bot.service.link;
+package edu.java.bot.repository.link;
 
 import java.util.regex.Pattern;
 

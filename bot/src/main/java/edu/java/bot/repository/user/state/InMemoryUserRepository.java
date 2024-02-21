@@ -1,11 +1,11 @@
-package edu.java.bot.service.user.state;
+package edu.java.bot.repository.user.state;
 
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class InMemoryUserStateService implements UserStateService {
+public class InMemoryUserRepository implements UserRepository {
     private Map<Long, UserState> getStateById = new HashMap<>();
 
     @Override

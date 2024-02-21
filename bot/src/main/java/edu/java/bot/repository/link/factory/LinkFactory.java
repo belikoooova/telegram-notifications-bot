@@ -1,7 +1,7 @@
-package edu.java.bot.service.link.factory;
+package edu.java.bot.repository.link.factory;
 
-import edu.java.bot.service.link.Link;
-import edu.java.bot.service.link.repository.LinkRepositoryKey;
+import edu.java.bot.repository.link.Link;
+import edu.java.bot.repository.link.repository.LinkRepositoryKey;
 import java.net.URISyntaxException;
 
 public interface LinkFactory {

@@ -2,32 +2,36 @@ package edu.java.bot.service.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.service.user.state.UserStateService;
+import edu.java.bot.repository.user.state.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StartCommand implements Command {
-    private final UserStateService userStateService;
+    private static final String TITLE = "/start";
+    private static final String DESCRIPTION = "register user";
+    private static final String ANSWER = "Hello! This bot will help you track updates on the resources you need "
+        + "(currently supports StackOverflow and GitHub). Type /help to see the list of commands.";
+    private final UserRepository userRepository;
 
     @Autowired
-    public StartCommand(UserStateService userStateService) {
-        this.userStateService = userStateService;
+    public StartCommand(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public String command() {
-        return CommandTitle.START.toString();
+        return TITLE;
     }
 
     @Override
     public String description() {
-        return CommandDescription.START.toString();
+        return DESCRIPTION;
     }
 
     @Override
     public SendMessage handle(Update update) {
-        userStateService.clearUserState(update.message().from().id());
-        return new SendMessage(update.message().chat().id(), CommandHumanReadableMessage.START_ANSWER.toString());
+        userRepository.clearUserState(update.message().from().id());
+        return new SendMessage(update.message().chat().id(), ANSWER);
     }
 }

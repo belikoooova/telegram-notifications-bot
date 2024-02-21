@@ -2,36 +2,41 @@ package edu.java.bot.service.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.service.link.factory.LinkFactory;
-import edu.java.bot.service.link.repository.LinkRepository;
-import edu.java.bot.service.link.repository.LinkRepositoryKey;
-import edu.java.bot.service.user.state.UserState;
-import edu.java.bot.service.user.state.UserStateService;
+import edu.java.bot.repository.link.factory.LinkFactory;
+import edu.java.bot.repository.link.repository.LinkRepository;
+import edu.java.bot.repository.link.repository.LinkRepositoryKey;
+import edu.java.bot.repository.user.state.UserRepository;
+import edu.java.bot.repository.user.state.UserState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UntrackCommand implements Command {
+    private static final String TITLE = "/untrack";
+    private static final String DESCRIPTION = "stop tracking a link";
+    private static final String GET_URL = "Enter the link you want to stop tracking.";
+    private static final String OK = "The link was successfully deleted.";
+    private static final String NOT_OK = "Sorry, your link is incorrect. Please try again or choose another command.";
     private boolean isAwaiting = false;
     private final LinkRepository linkRepository;
-    private final UserStateService userStateService;
+    private final UserRepository userRepository;
     private final LinkFactory linkFactory;
 
     @Autowired
-    public UntrackCommand(LinkRepository linkRepository, UserStateService userStateService, LinkFactory linkFactory) {
+    public UntrackCommand(LinkRepository linkRepository, UserRepository userRepository, LinkFactory linkFactory) {
         this.linkRepository = linkRepository;
-        this.userStateService = userStateService;
+        this.userRepository = userRepository;
         this.linkFactory = linkFactory;
     }
 
     @Override
     public String command() {
-        return CommandTitle.UNTRACK.toString();
+        return TITLE;
     }
 
     @Override
     public String description() {
-        return CommandDescription.UNTRACK.toString();
+        return DESCRIPTION;
     }
 
     @Override
@@ -39,26 +44,26 @@ public class UntrackCommand implements Command {
         Long userId = update.message().from().id();
         Long chatId = update.message().chat().id();
         String text = update.message().text();
-        if (isAwaiting && userStateService.getUserState(userId).equals(UserState.AWAITING_URL)) {
+        if (isAwaiting && userRepository.getUserState(userId).equals(UserState.AWAITING_URL)) {
             try {
                 LinkRepositoryKey key = linkFactory.createKey(userId, text);
                 linkRepository.deleteById(key);
                 isAwaiting = false;
-                userStateService.clearUserState(userId);
-                return new SendMessage(chatId, CommandHumanReadableMessage.UNTRACK_OK.toString());
+                userRepository.clearUserState(userId);
+                return new SendMessage(chatId, OK);
             } catch (IllegalArgumentException e) {
-                return new SendMessage(chatId, CommandHumanReadableMessage.LINK_NOT_OK.toString());
+                return new SendMessage(chatId, NOT_OK);
             }
         }
         isAwaiting = true;
-        userStateService.setUserState(userId, UserState.AWAITING_URL);
-        return new SendMessage(chatId, CommandHumanReadableMessage.TRACK_GET_URL.toString());
+        userRepository.setUserState(userId, UserState.AWAITING_URL);
+        return new SendMessage(chatId, GET_URL);
     }
 
     @Override
     public boolean supports(Update update) {
         Long userId = update.message().from().id();
-        if (isAwaiting && userStateService.getUserState(userId).equals(UserState.AWAITING_URL)) {
+        if (isAwaiting && userRepository.getUserState(userId).equals(UserState.AWAITING_URL)) {
             return true;
         }
         return update.message().text().equals(command());

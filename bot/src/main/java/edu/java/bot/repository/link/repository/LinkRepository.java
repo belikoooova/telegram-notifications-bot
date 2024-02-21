@@ -1,6 +1,6 @@
-package edu.java.bot.service.link.repository;
+package edu.java.bot.repository.link.repository;
 
-import edu.java.bot.service.link.Link;
+import edu.java.bot.repository.link.Link;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 

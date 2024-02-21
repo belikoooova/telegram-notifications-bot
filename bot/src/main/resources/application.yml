@@ -1,5 +1,5 @@
 app:
-  telegram-token: "6490724857:AAHToyHsxpCngTYHDVNZGrRZiQwaAlwCwww"
+  telegram-token: ${BOT_TOKEN}
 
 spring:
   application:
@@ -8,7 +8,6 @@ spring:
     time-zone: UTC
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-
 
 server:
   port: 8090

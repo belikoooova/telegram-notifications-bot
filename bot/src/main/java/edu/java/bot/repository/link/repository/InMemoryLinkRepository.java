@@ -1,6 +1,6 @@
-package edu.java.bot.service.link.repository;
+package edu.java.bot.repository.link.repository;
 
-import edu.java.bot.service.link.Link;
+import edu.java.bot.repository.link.Link;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class InMemoryLinkRepository implements LinkRepository {
-    private Map<LinkRepositoryKey, Link> getLinkByUrl = new HashMap<>();
+    private final Map<LinkRepositoryKey, Link> getLinkByUrl = new HashMap<>();
 
     @Override
     public Optional<Link> findById(LinkRepositoryKey key) {

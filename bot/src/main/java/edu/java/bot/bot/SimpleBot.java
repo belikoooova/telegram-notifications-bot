@@ -1,4 +1,4 @@
-package edu.java.bot.service.bot;
+package edu.java.bot.bot;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
@@ -10,24 +10,20 @@ import edu.java.bot.service.processor.UserMessageProcessor;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SimpleBot implements Bot {
-    private final ApplicationConfig applicationConfig;
     private final UserMessageProcessor messageProcessor;
-    private TelegramBot bot;
+    private final TelegramBot bot;
 
-    @Autowired
     public SimpleBot(ApplicationConfig applicationConfig, UserMessageProcessor messageProcessor) {
-        this.applicationConfig = applicationConfig;
         this.messageProcessor = messageProcessor;
+        this.bot = new TelegramBot(applicationConfig.getTelegramToken());
     }
 
     @PostConstruct
     public void init() {
-        this.bot = new TelegramBot(applicationConfig.getTelegramToken());
         start();
     }
 
@@ -55,5 +51,6 @@ public class SimpleBot implements Bot {
     @PreDestroy
     @Override
     public void close() {
+        bot.shutdown();
     }
 }
