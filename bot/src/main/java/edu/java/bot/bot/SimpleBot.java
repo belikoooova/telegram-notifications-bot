@@ -19,7 +19,7 @@ public class SimpleBot implements Bot {
 
     public SimpleBot(ApplicationConfig applicationConfig, UserMessageProcessor messageProcessor) {
         this.messageProcessor = messageProcessor;
-        this.bot = new TelegramBot(applicationConfig.getTelegramToken());
+        this.bot = new TelegramBot(applicationConfig.telegramToken());
     }
 
     @PostConstruct
