@@ -1,8 +1,8 @@
 package edu.java.bot.entity.link;
 
+import java.util.regex.Pattern;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Getter

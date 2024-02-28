@@ -3,7 +3,6 @@ package edu.java.bot.service.command;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.entity.link.Link;
-import java.net.URISyntaxException;
 import edu.java.bot.entity.user.UserState;
 import edu.java.bot.repository.link.LinkRepository;
 import edu.java.bot.repository.user.UserRepository;

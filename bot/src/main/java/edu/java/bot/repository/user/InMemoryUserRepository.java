@@ -3,10 +3,10 @@ package edu.java.bot.repository.user;
 import edu.java.bot.entity.link.Link;
 import edu.java.bot.entity.user.User;
 import edu.java.bot.entity.user.UserState;
-import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {

@@ -2,14 +2,13 @@ package edu.java.bot.service.factory;
 
 import edu.java.bot.entity.link.Link;
 import edu.java.bot.entity.link.TrackingResource;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.regex.Matcher;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 @Service
 public class LinkFactory {
@@ -45,8 +44,6 @@ public class LinkFactory {
             connection.setRequestMethod("GET");
 
             int responseCode = connection.getResponseCode();
-
-            System.out.println(responseCode);
 
             return HttpStatus.valueOf(responseCode).is2xxSuccessful();
         } catch (Exception e) {

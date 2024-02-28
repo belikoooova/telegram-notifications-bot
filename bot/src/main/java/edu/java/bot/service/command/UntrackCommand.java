@@ -9,8 +9,6 @@ import edu.java.bot.service.factory.LinkFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.net.URISyntaxException;
-
 @Component
 @RequiredArgsConstructor
 public class UntrackCommand implements Command {
