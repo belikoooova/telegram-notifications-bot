@@ -19,3 +19,4 @@ public interface Command {
         return new BotCommand(command(), description());
     }
 }
+

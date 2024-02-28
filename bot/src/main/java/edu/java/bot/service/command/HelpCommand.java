@@ -2,26 +2,22 @@ package edu.java.bot.service.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.repository.user.state.UserRepository;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import edu.java.bot.repository.user.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class HelpCommand implements Command {
     private static final String TITLE = "/help";
     private static final String DESCRIPTION = "show all commands";
     private static final String BEGIN_OF_THE_ANSWER = "Here are the commands I can perform:\n";
     private static final String COMMANDS_SEPARATOR = " -> ";
     private static final String LINES_SEPARATOR = ";\n";
+
     private final List<Command> commands;
     private final UserRepository userRepository;
-
-    @Autowired
-    public HelpCommand(List<Command> commands, UserRepository userRepository) {
-        this.userRepository = userRepository;
-        this.commands = commands;
-    }
 
     @Override
     public String command() {
