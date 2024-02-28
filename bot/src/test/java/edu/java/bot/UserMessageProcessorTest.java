@@ -5,10 +5,9 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.service.command.Command;
-import edu.java.bot.service.processor.ProcessorHumanReadableMessage;
-import edu.java.bot.service.processor.SimpleUserMessageProcessor;
 import java.util.Arrays;
 import java.util.List;
+import edu.java.bot.service.processor.UserMessageProcessor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class SimpleUserMessageProcessorTest {
+class UserMessageProcessorTest {
     private static final long CHAT_ID = 123L;
     private Command commandOne = mock(Command.class);
     private Command commandTwo = mock(Command.class);
 
     @InjectMocks
-    private SimpleUserMessageProcessor userMessageProcessor;
+    private UserMessageProcessor userMessageProcessor;
     private Update update = mock(Update.class);
     private Message message = mock(Message.class);
     private Chat chat = mock(Chat.class);
@@ -39,7 +38,7 @@ class SimpleUserMessageProcessorTest {
         when(commandTwo.handle(update)).thenReturn(new SendMessage(CHAT_ID, "Handled by commandTwo"));
 
         List<Command> commands = Arrays.asList(commandOne, commandTwo);
-        userMessageProcessor = new SimpleUserMessageProcessor(commands);
+        userMessageProcessor = new UserMessageProcessor(commands);
     }
 
     @Test
@@ -51,7 +50,7 @@ class SimpleUserMessageProcessorTest {
         SendMessage response = userMessageProcessor.process(update);
 
         assertEquals(
-            ProcessorHumanReadableMessage.ERROR_UNKNOWN_COMMAND_OR_INCORRECT_TEXT.toString(),
+            "Sorry, you entered an unknown command or an incorrect message.",
             response.getParameters().get("text")
         );
     }

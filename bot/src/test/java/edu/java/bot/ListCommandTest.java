@@ -5,12 +5,14 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.entity.link.Link;
+import edu.java.bot.repository.link.LinkRepository;
+import edu.java.bot.repository.user.UserRepository;
 import edu.java.bot.service.command.ListCommand;
-import edu.java.bot.repository.link.Link;
-import edu.java.bot.repository.link.repository.LinkRepository;
-import edu.java.bot.repository.user.state.UserRepository;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +46,7 @@ class ListCommandTest {
     void setUp() {
         linkRepository = mock(LinkRepository.class);
         userRepository = mock(UserRepository.class);
-        listCommand = new ListCommand(linkRepository, userRepository);
+        listCommand = new ListCommand(userRepository);
 
         when(update.message()).thenReturn(message);
         when(message.chat()).thenReturn(chat);
@@ -56,7 +58,8 @@ class ListCommandTest {
     @Test
     @DisplayName("Handle without links")
     void testHandleNoLinks() {
-        when(linkRepository.count()).thenReturn(NO_LINKS);
+        // userRepository.getUserLinks(userId).isEmpty()
+        when(userRepository.getUserLinks(USER_ID)).thenReturn(new HashSet<>());
 
         SendMessage result = listCommand.handle(update);
 
@@ -73,10 +76,9 @@ class ListCommandTest {
     void testHandleWithLinks() {
         Link link1 = mock(Link.class);
         Link link2 = mock(Link.class);
-        when(link1.getUrl()).thenReturn(URI.create("http://example1.com"));
-        when(link2.getUrl()).thenReturn(URI.create("http://example2.com"));
-        when(linkRepository.count()).thenReturn(SOME_LINKS);
-        when(linkRepository.findAll()).thenReturn(Arrays.asList(link1, link2));
+        when(link1.getUrl()).thenReturn("http://example1.com");
+        when(link2.getUrl()).thenReturn("http://example2.com");
+        when(userRepository.getUserLinks(USER_ID)).thenReturn(Set.of(link1, link2));
 
         SendMessage result = listCommand.handle(update);
 
