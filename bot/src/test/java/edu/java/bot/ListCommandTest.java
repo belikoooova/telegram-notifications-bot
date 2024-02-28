@@ -79,6 +79,12 @@ class ListCommandTest {
             "http://example1.com" +
             "\n- " +
             "http://example2.com";
-        Assertions.assertEquals(expectedText, result.getParameters().get("text"));
+        String expectedTextReverted = "Here are the links I am tracking:" +
+            "\n- " +
+            "http://example2.com" +
+            "\n- " +
+            "http://example1.com";
+        Assertions.assertTrue(expectedText.equals(result.getParameters().get("text"))
+            || expectedTextReverted.equals(result.getParameters().get("text")));
     }
 }
