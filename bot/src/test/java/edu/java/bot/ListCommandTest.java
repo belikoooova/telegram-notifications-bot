@@ -26,11 +26,6 @@ import static org.mockito.Mockito.when;
 class ListCommandTest {
     private static final long CHAT_ID = 123L;
     private static final long USER_ID = 1;
-    private static final long NO_LINKS = 0;
-    private static final long SOME_LINKS = 2;
-
-    @Mock
-    private LinkRepository linkRepository;
 
     @Mock
     private UserRepository userRepository;
@@ -44,7 +39,6 @@ class ListCommandTest {
 
     @BeforeEach
     void setUp() {
-        linkRepository = mock(LinkRepository.class);
         userRepository = mock(UserRepository.class);
         listCommand = new ListCommand(userRepository);
 
@@ -58,7 +52,6 @@ class ListCommandTest {
     @Test
     @DisplayName("Handle without links")
     void testHandleNoLinks() {
-        // userRepository.getUserLinks(userId).isEmpty()
         when(userRepository.getUserLinks(USER_ID)).thenReturn(new HashSet<>());
 
         SendMessage result = listCommand.handle(update);
