@@ -1,25 +1,25 @@
 package edu.java.scrapper.service.client;
 
 import edu.java.scrapper.service.client.model.RepositoryResponse;
+import java.time.Duration;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 public class GitHubClient {
-    private static final String BASE_URL = "https://api.github.com";
+    private static final int TIMEOUT = 5;
     private final WebClient webClient;
 
-    public GitHubClient(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl(BASE_URL).build();
-    }
-
-    public GitHubClient(WebClient.Builder webClientBuilder, String baseUrl) {
+    public GitHubClient(
+        WebClient.Builder webClientBuilder,
+        String baseUrl
+    ) {
         this.webClient = webClientBuilder.baseUrl(baseUrl).build();
     }
 
-    public Mono<RepositoryResponse> fetchRepository(String owner, String name) {
+    public RepositoryResponse fetchRepository(String owner, String name) {
         return webClient.get()
             .uri("/repos/{owner}/{name}", owner, name)
             .retrieve()
-            .bodyToMono(RepositoryResponse.class);
+            .bodyToMono(RepositoryResponse.class)
+            .block(Duration.ofSeconds(TIMEOUT));
     }
 }

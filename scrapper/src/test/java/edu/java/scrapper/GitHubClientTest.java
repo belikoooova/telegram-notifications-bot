@@ -3,15 +3,18 @@ package edu.java.scrapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import edu.java.scrapper.service.client.GitHubClient;
-import java.time.OffsetDateTime;
+import edu.java.scrapper.service.client.model.RepositoryResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.test.StepVerifier;
+
+import java.time.OffsetDateTime;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GitHubClientTest {
     private static final String LOGIN = "belikoooova";
@@ -49,13 +52,11 @@ class GitHubClientTest {
                 .withBody(jsonResponse)
                 .withStatus(HTTP_OK)));
 
-        StepVerifier
-            .create(gitHubClient.fetchRepository(LOGIN, TITLE))
-            .expectNextMatches(repositoryResponse ->
-                repositoryResponse.owner().login().equals(LOGIN)
-                    && repositoryResponse.title().equals(TITLE)
-                    && repositoryResponse.createdTime().equals(DATE_TIME))
-            .verifyComplete();
+        RepositoryResponse response = gitHubClient.fetchRepository(LOGIN, TITLE);
+
+        assertEquals(LOGIN, response.owner().login());
+        assertEquals(TITLE, response.name());
+        assertEquals(DATE_TIME, response.createdAt());
     }
 
     @AfterEach

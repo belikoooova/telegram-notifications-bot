@@ -1,15 +1,19 @@
 package edu.java.scrapper.service.client.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.util.List;
 
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record QuestionResponse(
-    @JsonProperty("items") List<ItemResponse> items
+    List<ItemResponse> items
 ) {
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public record ItemResponse(
-        @JsonProperty("question_id") Long questionId,
-        @JsonProperty("creation_date") Long creationDateSeconds,
-        @JsonProperty("last_activity_date") Long lastActivityDateSeconds,
-        @JsonProperty("last_edit_date") Long lastEditDateSeconds
-    ) { }
+        Long questionId,
+        Long creationDateSeconds,
+        Long lastActivityDateSeconds,
+        Long lastEditDateSeconds
+    ) {
+    }
 }

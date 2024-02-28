@@ -1,16 +1,20 @@
 package edu.java.scrapper.service.client.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.time.OffsetDateTime;
 
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record RepositoryResponse(
-    @JsonProperty("owner") UserResponse owner,
-    @JsonProperty("name") String title,
-    @JsonProperty("created_at") OffsetDateTime createdTime,
-    @JsonProperty("updated_at") OffsetDateTime updatedTime,
-    @JsonProperty("pushed_at") OffsetDateTime pushedTime
+    UserResponse owner,
+    String name,
+    OffsetDateTime createdAt,
+    OffsetDateTime updatedAt,
+    OffsetDateTime pushedAt
 ) {
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public record UserResponse(
-        @JsonProperty("login") String login
+        String login
     ) { }
 }
