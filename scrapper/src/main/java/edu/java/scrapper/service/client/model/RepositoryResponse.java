@@ -1,6 +1,5 @@
 package edu.java.scrapper.service.client.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.time.OffsetDateTime;
@@ -16,5 +15,6 @@ public record RepositoryResponse(
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public record UserResponse(
         String login
-    ) { }
+    ) {
+    }
 }
