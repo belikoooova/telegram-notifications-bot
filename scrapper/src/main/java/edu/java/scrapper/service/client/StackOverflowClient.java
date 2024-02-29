@@ -1,6 +1,6 @@
 package edu.java.scrapper.service.client;
 
-import edu.java.scrapper.service.client.model.QuestionResponse;
+import edu.java.scrapper.entity.dto.QuestionResponse;
 import java.time.Duration;
 import org.springframework.web.reactive.function.client.WebClient;
 

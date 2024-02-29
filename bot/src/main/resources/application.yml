@@ -1,6 +1,10 @@
 app:
   telegram-token: ${BOT_TOKEN}
 
+scrapper:
+  base:
+    url: localhost:8080
+
 spring:
   application:
     name: bot

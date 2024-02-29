@@ -3,7 +3,7 @@ package edu.java.scrapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import edu.java.scrapper.service.client.StackOverflowClient;
-import edu.java.scrapper.service.client.model.QuestionResponse;
+import edu.java.scrapper.entity.dto.QuestionResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

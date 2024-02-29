@@ -1,5 +1,6 @@
 package edu.java.scrapper.configuration;
 
+import edu.java.scrapper.service.client.BotClient;
 import edu.java.scrapper.service.client.GitHubClient;
 import edu.java.scrapper.service.client.StackOverflowClient;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,5 +24,13 @@ public class ClientConfig {
         @Value("${stackoverflow.base.url:https://api.stackexchange.com/2.3}") String stackoverflowBaseUrl
     ) {
         return new StackOverflowClient(webClientBuilder, stackoverflowBaseUrl);
+    }
+
+    @Bean
+    public BotClient botClient(
+        WebClient.Builder webClientBuilder,
+        @Value("${bot.base.url:localhost:8080}") String botBaseUrl
+    ) {
+        return new BotClient(webClientBuilder, botBaseUrl);
     }
 }

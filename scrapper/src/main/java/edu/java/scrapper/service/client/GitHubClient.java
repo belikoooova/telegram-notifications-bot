@@ -1,6 +1,6 @@
 package edu.java.scrapper.service.client;
 
-import edu.java.scrapper.service.client.model.RepositoryResponse;
+import edu.java.scrapper.entity.dto.RepositoryResponse;
 import java.time.Duration;
 import org.springframework.web.reactive.function.client.WebClient;
 

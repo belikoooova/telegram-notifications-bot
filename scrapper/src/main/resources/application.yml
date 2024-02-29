@@ -10,6 +10,10 @@ stackoverflow:
   base:
     url: https://api.stackexchange.com/2.3
 
+bot:
+  base:
+    url: localhost:8080
+
 spring:
   application:
     name: scrapper
