@@ -12,6 +12,10 @@
     <artifactId>scrapper</artifactId>
     <version>${revision}</version>
 
+    <properties>
+        <slf4j.version>2.0.11</slf4j.version>
+    </properties>
+
     <dependencies>
         <!-- Web -->
         <dependency>
@@ -61,6 +65,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
         <!-- Tests -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -85,7 +96,7 @@
         </dependency>
         <dependency>
             <groupId>org.wiremock</groupId>
-            <artifactId>wiremock</artifactId>
+            <artifactId>wiremock-standalone</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
