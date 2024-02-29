@@ -22,7 +22,8 @@ public class Link {
     private URI url;
 
     public Link(URI url) {
-        new Link(RANDOM.nextLong(), url); // Temporary stub.
+        this.url = url;
+        this.id = RANDOM.nextLong(); // Temporary stub.
         // Once the JPA repository is added, the id will be generated properly.
     }
 }
