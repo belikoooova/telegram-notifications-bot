@@ -1,29 +1,24 @@
-package edu.java.scrapper;
+package edu.java.scrapper.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import edu.java.scrapper.service.client.GitHubClient;
-import edu.java.scrapper.entity.dto.RepositoryResponse;
+import edu.java.scrapper.service.client.StackOverflowClient;
+import edu.java.scrapper.entity.dto.QuestionResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.time.OffsetDateTime;
-
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class GitHubClientTest {
-    private static final String LOGIN = "belikoooova";
-    private static final String TITLE = "tinkoff-course";
+class StackOverflowClientTest {
+    private static final Long QUESTION_ID = 78023169L;
     private static final int HTTP_OK = 200;
-    private static final OffsetDateTime DATE_TIME = OffsetDateTime.parse("2021-02-20T14:30:00Z");
 
     private WireMockServer wireMockServer;
-    private GitHubClient gitHubClient;
+    private StackOverflowClient stackOverflowClient;
 
     @BeforeEach
     void setup() {
@@ -32,31 +27,26 @@ class GitHubClientTest {
         WireMock.configureFor("localhost", wireMockServer.port());
 
         WebClient.Builder webClientBuilder = WebClient.builder();
-        gitHubClient = new GitHubClient(webClientBuilder, wireMockServer.baseUrl());
+        stackOverflowClient = new StackOverflowClient(webClientBuilder, wireMockServer.baseUrl());
     }
 
     @Test
-    void fetchRepositoryShouldReturnRepositoryDetails() {
+    void fetchQuestionShouldReturnQuestionDetails() {
         String jsonResponse = """
-            {
-              "owner": {"login": "belikoooova"},
-              "name": "tinkoff-course",
-              "created_at": "2021-02-20T14:30:00Z",
-              "updated_at": "2021-02-21T14:30:00Z",
-              "pushed_at": "2021-02-22T14:30:00Z"
-            }""";
+            {"items":[{"question_id":78023169,"creation_date":1708371892,"last_activity_date":1708372580,"last_edit_date":1708372580}],"has_more":false,"quota_max":300,"quota_remaining":274}
+            """;
 
-        wireMockServer.stubFor(get(WireMock.urlEqualTo("/repos/belikoooova/tinkoff-course"))
+        wireMockServer.stubFor(get(WireMock.urlEqualTo(
+            "/questions/" + QUESTION_ID + "?order=desc&sort=activity&site=stackoverflow"))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
                 .withBody(jsonResponse)
                 .withStatus(HTTP_OK)));
 
-        RepositoryResponse response = gitHubClient.fetchRepository(LOGIN, TITLE);
+        QuestionResponse questionResponse = stackOverflowClient.fetchQuestion(QUESTION_ID);
 
-        assertEquals(LOGIN, response.owner().login());
-        assertEquals(TITLE, response.name());
-        assertEquals(DATE_TIME, response.createdAt());
+        assertEquals(1, questionResponse.items().size());
+        assertEquals(QUESTION_ID, questionResponse.items().get(0).questionId());
     }
 
     @AfterEach

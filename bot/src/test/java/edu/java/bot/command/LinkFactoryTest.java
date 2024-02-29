@@ -1,4 +1,4 @@
-package edu.java.bot;
+package edu.java.bot.command;
 
 import edu.java.bot.entity.link.Link;
 import edu.java.bot.entity.link.TrackingResource;
