@@ -27,13 +27,13 @@ public class LinkController {
         return ResponseEntity.ok(service.getAllLinks(chatId));
     }
 
-    @PostMapping
+    @PostMapping("/{chatId}")
     ResponseEntity<String> trackLink(@PathVariable Long chatId, @RequestBody AddLinkRequest request) {
         service.addLink(chatId, request);
         return ResponseEntity.ok(OK_POST);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{chatId}")
     ResponseEntity<String> deleteLink(@PathVariable Long chatId, @RequestBody RemoveLinkRequest request) {
         service.deleteLink(chatId, request);
         return ResponseEntity.ok(OK_DELETE);
