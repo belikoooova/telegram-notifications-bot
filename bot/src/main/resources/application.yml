@@ -1,11 +1,13 @@
 app:
-  telegram-token: unset
+  telegram-token: ${BOT_TOKEN}
 
 spring:
   application:
     name: bot
   jackson:
     time-zone: UTC
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 
 server:
   port: 8090
