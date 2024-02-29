@@ -1,19 +1,19 @@
-package edu.java.bot.entity.dto;
+package edu.java.scrapper.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.net.URI;
 import java.util.List;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LinkUpdateRequest {
-    private Long id;
-    private URI url;
+public class ApiErrorResponse {
     private String description;
-    private List<Long> tgChatIds;
+    private String code;
+    private String exceptionName;
+    private String exceptionMessage;
+    private List<String> stacktrace;
 }

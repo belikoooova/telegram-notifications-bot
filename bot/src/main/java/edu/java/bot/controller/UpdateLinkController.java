@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class UpdateLinkController {
-    private static final String SUMMARY = "Отправить обновление";
     private static final String OK_DESCRIPTION = "Обновление обработано";
     private static final String MEDIA_TYPE = "application/json";
     private final LinkUpdateProcessor processor;

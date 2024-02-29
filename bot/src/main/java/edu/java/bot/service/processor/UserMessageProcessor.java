@@ -6,8 +6,9 @@ import edu.java.bot.service.command.Command;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class UserMessageProcessor {
     private static final String ERROR_UNKNOWN_COMMAND_OR_INCORRECT_TEXT
