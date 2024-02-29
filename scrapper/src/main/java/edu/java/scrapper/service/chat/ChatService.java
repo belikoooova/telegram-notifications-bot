@@ -4,9 +4,9 @@ import edu.java.scrapper.entity.Chat;
 import edu.java.scrapper.exception.ChatAlreadyExistsException;
 import edu.java.scrapper.exception.NoSuchChatException;
 import edu.java.scrapper.repository.chat.ChatRepository;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor

@@ -17,8 +17,8 @@ public class UpdateLinkController {
     private final LinkUpdateProcessor processor;
 
     @PostMapping(value = "/updates",
-                    produces = { MEDIA_TYPE },
-                    consumes = { MEDIA_TYPE })
+                 produces = {MEDIA_TYPE},
+                 consumes = {MEDIA_TYPE})
     public ResponseEntity<String> sendUpdate(@Valid @RequestBody LinkUpdateRequest request) {
         processor.process(request);
         return ResponseEntity.ok(OK_DESCRIPTION);

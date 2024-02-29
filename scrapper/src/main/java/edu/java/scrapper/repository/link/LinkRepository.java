@@ -8,4 +8,6 @@ public interface LinkRepository {
     Optional<Link> findByUrl(URI url);
 
     void addLink(Link link);
+
+    void deleteByUrl(URI url);
 }

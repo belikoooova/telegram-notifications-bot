@@ -1,11 +1,11 @@
 package edu.java.bot.entity.dto;
 
+import java.net.URI;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.net.URI;
-import java.util.List;
 
 @Setter
 @Getter

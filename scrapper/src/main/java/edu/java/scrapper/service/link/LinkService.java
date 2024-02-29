@@ -11,12 +11,11 @@ import edu.java.scrapper.exception.NoSuchChatException;
 import edu.java.scrapper.exception.NoSuchLinkException;
 import edu.java.scrapper.repository.chat.ChatRepository;
 import edu.java.scrapper.repository.link.LinkRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +51,7 @@ public class LinkService {
     public void deleteLink(Long chatId, RemoveLinkRequest request) {
         Chat chat = getChat(chatId);
         Link link = linkRepository.findByUrl(request.getUrl()).orElseThrow(NoSuchLinkException::new);
+        linkRepository.deleteByUrl(request.getUrl());
         List<Link> links = chat.getLinks();
         if (!links.contains(link)) {
             throw new NoSuchLinkException();
