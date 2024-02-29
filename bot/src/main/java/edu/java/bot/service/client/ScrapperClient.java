@@ -12,6 +12,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 public class ScrapperClient {
     private static final int TIMEOUT = 5;
+    private static final String TG_CHAT = "/tg-chat/{chatId}";
+    private static final String LINKS = "/links/{chatId}";
     private final WebClient webClient;
 
     public ScrapperClient(
@@ -23,7 +25,7 @@ public class ScrapperClient {
 
     public String registerChat(Long chatId) {
         return webClient.post()
-            .uri("/tg-chat/{chatId}", chatId)
+            .uri(TG_CHAT, chatId)
             .retrieve()
             .onStatus(
                 status -> HttpStatus.BAD_REQUEST.equals(status) || HttpStatus.CONFLICT.equals(status),
@@ -34,7 +36,7 @@ public class ScrapperClient {
 
     public String deleteChat(Long chatId) {
         return webClient.delete()
-            .uri("/tg-chat/{chatId}", chatId)
+            .uri(TG_CHAT, chatId)
             .retrieve()
             .onStatus(
                 status -> HttpStatus.BAD_REQUEST.equals(status) || HttpStatus.NOT_FOUND.equals(status),
@@ -45,7 +47,7 @@ public class ScrapperClient {
 
     public ListLinkResponse getLinks(Long chatId) {
         return webClient.get()
-            .uri("/links/{chatId}", chatId)
+            .uri(LINKS, chatId)
             .retrieve()
             .onStatus(
                 status -> HttpStatus.BAD_REQUEST.equals(status) || HttpStatus.NOT_FOUND.equals(status),
@@ -56,7 +58,7 @@ public class ScrapperClient {
 
     public String trackLink(Long chatId, AddLinkRequest request) {
         return webClient.post()
-            .uri("/links/{chatId}", chatId)
+            .uri(LINKS, chatId)
             .bodyValue(request)
             .retrieve()
             .onStatus(
@@ -70,7 +72,7 @@ public class ScrapperClient {
 
     public String untrackLink(Long chatId, RemoveLinkRequest request) {
         return webClient.method(HttpMethod.DELETE)
-            .uri("/links/{chatId}", chatId)
+            .uri(LINKS, chatId)
             .bodyValue(request)
             .retrieve()
             .onStatus(

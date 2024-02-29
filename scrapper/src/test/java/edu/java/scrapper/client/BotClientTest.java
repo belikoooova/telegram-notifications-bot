@@ -13,7 +13,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class BotClientTest {
+class BotClientTest {
     private WireMockServer wireMockServer;
     private BotClient botClient;
 
