@@ -8,5 +8,6 @@ import org.jetbrains.annotations.NotNull;
 @RequiredArgsConstructor
 @Getter
 public class ApiErrorResponseException extends RuntimeException {
-    @NotNull private final ApiErrorResponse apiErrorResponse;
+    @NotNull
+    private final ApiErrorResponse apiErrorResponse;
 }

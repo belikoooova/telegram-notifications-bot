@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class ScrapperClientTest {
     private static final Long EXISTING_CHAT_ID = 1L;
     private static final Long NOT_EXISTING_CHAT_ID = 2L;
+    private static final int TIMEOUT_IN_MINUTES = 5;
     private WireMockServer wireMockServer;
     private ScrapperClient scrapperClient;
 
@@ -35,7 +36,7 @@ class ScrapperClientTest {
         WireMock.configureFor("localhost", wireMockServer.port());
 
         WebClient.Builder webClientBuilder = WebClient.builder();
-        scrapperClient = new ScrapperClient(webClientBuilder, wireMockServer.baseUrl());
+        scrapperClient = new ScrapperClient(webClientBuilder, wireMockServer.baseUrl(), TIMEOUT_IN_MINUTES);
     }
 
     @Test

@@ -2,6 +2,7 @@ package edu.java.scrapper.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import edu.java.scrapper.entity.dto.LinkUpdateRequest;
 import edu.java.scrapper.service.client.BotClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BotClientTest {
     private WireMockServer wireMockServer;
+    private static final int TIMEOUT = 5;
     private BotClient botClient;
 
     @BeforeEach
@@ -23,7 +25,7 @@ class BotClientTest {
         WireMock.configureFor("localhost", wireMockServer.port());
 
         WebClient.Builder webClientBuilder = WebClient.builder();
-        botClient = new BotClient(webClientBuilder, wireMockServer.baseUrl());
+        botClient = new BotClient(webClientBuilder, wireMockServer.baseUrl(), TIMEOUT);
     }
 
     @Test

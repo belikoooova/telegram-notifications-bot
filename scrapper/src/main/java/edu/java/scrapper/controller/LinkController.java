@@ -1,5 +1,8 @@
 package edu.java.scrapper.controller;
 
+import edu.java.scrapper.entity.dto.AddLinkRequest;
+import edu.java.scrapper.entity.dto.ListLinkResponse;
+import edu.java.scrapper.entity.dto.RemoveLinkRequest;
 import edu.java.scrapper.service.link.LinkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +23,18 @@ public class LinkController {
     private final LinkService service;
 
     @GetMapping("/{chatId}")
-    ResponseEntity<ListLinkResponse> getAllLinks(@PathVariable Long chatId) {
+    public ResponseEntity<ListLinkResponse> getAllLinks(@PathVariable Long chatId) {
         return ResponseEntity.ok(service.getAllLinks(chatId));
     }
 
     @PostMapping("/{chatId}")
-    ResponseEntity<String> trackLink(@PathVariable Long chatId, @RequestBody AddLinkRequest request) {
+    public ResponseEntity<String> trackLink(@PathVariable Long chatId, @RequestBody AddLinkRequest request) {
         service.addLink(chatId, request);
         return ResponseEntity.ok(OK_POST);
     }
 
     @DeleteMapping("/{chatId}")
-    ResponseEntity<String> deleteLink(@PathVariable Long chatId, @RequestBody RemoveLinkRequest request) {
+    public ResponseEntity<String> deleteLink(@PathVariable Long chatId, @RequestBody RemoveLinkRequest request) {
         service.deleteLink(chatId, request);
         return ResponseEntity.ok(OK_DELETE);
     }

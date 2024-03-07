@@ -7,20 +7,21 @@ import edu.java.bot.entity.dto.RemoveLinkRequest;
 import edu.java.bot.exception.ApiErrorResponseException;
 import java.time.Duration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class ScrapperClient {
-    private static final int TIMEOUT = 5;
     private static final String TG_CHAT = "/tg-chat/{chatId}";
     private static final String LINKS = "/links/{chatId}";
     private final WebClient webClient;
+    private final int timeoutInMinutes;
 
     public ScrapperClient(
         WebClient.Builder webClientBuilder,
-        String baseUrl
+        String baseUrl,
+        int timeoutInMinutes
     ) {
         this.webClient = webClientBuilder.baseUrl(baseUrl).build();
+        this.timeoutInMinutes = timeoutInMinutes;
     }
 
     public String registerChat(Long chatId) {
@@ -28,10 +29,10 @@ public class ScrapperClient {
             .uri(TG_CHAT, chatId)
             .retrieve()
             .onStatus(
-                status -> HttpStatus.BAD_REQUEST.equals(status) || HttpStatus.CONFLICT.equals(status),
+                status -> status.is4xxClientError() || status.is5xxServerError(),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ApiErrorResponseException::new)
             ).bodyToMono(String.class)
-            .block(Duration.ofSeconds(TIMEOUT));
+            .block(Duration.ofSeconds(timeoutInMinutes));
     }
 
     public String deleteChat(Long chatId) {
@@ -39,10 +40,10 @@ public class ScrapperClient {
             .uri(TG_CHAT, chatId)
             .retrieve()
             .onStatus(
-                status -> HttpStatus.BAD_REQUEST.equals(status) || HttpStatus.NOT_FOUND.equals(status),
+                status -> status.is4xxClientError() || status.is5xxServerError(),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ApiErrorResponseException::new)
             ).bodyToMono(String.class)
-            .block(Duration.ofSeconds(TIMEOUT));
+            .block(Duration.ofSeconds(timeoutInMinutes));
     }
 
     public ListLinkResponse getLinks(Long chatId) {
@@ -50,10 +51,10 @@ public class ScrapperClient {
             .uri(LINKS, chatId)
             .retrieve()
             .onStatus(
-                status -> HttpStatus.BAD_REQUEST.equals(status) || HttpStatus.NOT_FOUND.equals(status),
+                status -> status.is4xxClientError() || status.is5xxServerError(),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ApiErrorResponseException::new)
             ).bodyToMono(ListLinkResponse.class)
-            .block(Duration.ofSeconds(TIMEOUT));
+            .block(Duration.ofSeconds(timeoutInMinutes));
     }
 
     public String trackLink(Long chatId, AddLinkRequest request) {
@@ -62,12 +63,10 @@ public class ScrapperClient {
             .bodyValue(request)
             .retrieve()
             .onStatus(
-                status -> HttpStatus.BAD_REQUEST.equals(status)
-                    || HttpStatus.NOT_FOUND.equals(status)
-                    || HttpStatus.CONFLICT.equals(status),
+                status -> status.is4xxClientError() || status.is5xxServerError(),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ApiErrorResponseException::new)
             ).bodyToMono(String.class)
-            .block(Duration.ofSeconds(TIMEOUT));
+            .block(Duration.ofSeconds(timeoutInMinutes));
     }
 
     public String untrackLink(Long chatId, RemoveLinkRequest request) {
@@ -76,9 +75,9 @@ public class ScrapperClient {
             .bodyValue(request)
             .retrieve()
             .onStatus(
-                status -> HttpStatus.BAD_REQUEST.equals(status) || HttpStatus.NOT_FOUND.equals(status),
+                status -> status.is4xxClientError() || status.is5xxServerError(),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ApiErrorResponseException::new)
             ).bodyToMono(String.class)
-            .block(Duration.ofSeconds(TIMEOUT));
+            .block(Duration.ofSeconds(timeoutInMinutes));
     }
 }

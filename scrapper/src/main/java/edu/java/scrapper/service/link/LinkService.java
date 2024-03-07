@@ -2,7 +2,11 @@ package edu.java.scrapper.service.link;
 
 import edu.java.scrapper.entity.Chat;
 import edu.java.scrapper.entity.Link;
-import edu.java.scrapper.exception.LinkAlreadyTracksException;
+import edu.java.scrapper.entity.dto.AddLinkRequest;
+import edu.java.scrapper.entity.dto.LinkResponse;
+import edu.java.scrapper.entity.dto.ListLinkResponse;
+import edu.java.scrapper.entity.dto.RemoveLinkRequest;
+import edu.java.scrapper.exception.LinkAlreadyTrackedException;
 import edu.java.scrapper.exception.NoSuchChatException;
 import edu.java.scrapper.exception.NoSuchLinkException;
 import edu.java.scrapper.repository.chat.ChatRepository;
@@ -29,16 +33,11 @@ public class LinkService {
 
     public void addLink(Long chatId, AddLinkRequest request) {
         Chat chat = getChat(chatId);
-        Link link;
-        if (linkRepository.findByUrl(request.getUrl()).isEmpty()) {
-            link = new Link(request.getUrl());
-            linkRepository.addLink(link);
-        } else {
-            link = linkRepository.findByUrl(request.getUrl()).get();
-        }
+        var link = linkRepository.findByUrl(request.getUrl())
+            .orElseGet(() -> linkRepository.addLink(new Link(request.getUrl())));
         List<Link> links = chat.getLinks();
         if (links.contains(link)) {
-            throw new LinkAlreadyTracksException();
+            throw new LinkAlreadyTrackedException();
         }
         links.add(link);
     }

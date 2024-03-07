@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class StackOverflowClientTest {
     private static final Long QUESTION_ID = 78023169L;
+    private static final int TIMEOUT = 5;
     private static final int HTTP_OK = 200;
 
     private WireMockServer wireMockServer;
@@ -27,7 +28,7 @@ class StackOverflowClientTest {
         WireMock.configureFor("localhost", wireMockServer.port());
 
         WebClient.Builder webClientBuilder = WebClient.builder();
-        stackOverflowClient = new StackOverflowClient(webClientBuilder, wireMockServer.baseUrl());
+        stackOverflowClient = new StackOverflowClient(webClientBuilder, wireMockServer.baseUrl(), TIMEOUT);
     }
 
     @Test

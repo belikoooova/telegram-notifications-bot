@@ -13,24 +13,27 @@ public class ClientConfig {
     @Bean
     public GitHubClient gitHubClient(
         WebClient.Builder webClientBuilder,
-        @Value("${github.base.url:GITHUB_BASE_URL}") String githubBaseUrl
+        @Value("${github.base.url:GITHUB_BASE_URL}") String githubBaseUrl,
+        @Value("${timeout.minutes}") int timeout
     ) {
-        return new GitHubClient(webClientBuilder, githubBaseUrl);
+        return new GitHubClient(webClientBuilder, githubBaseUrl, timeout);
     }
 
     @Bean
     public StackOverflowClient stackOverflowClient(
         WebClient.Builder webClientBuilder,
-        @Value("${stackoverflow.base.url:STACKOVERFLOW_BASE_URL}") String stackoverflowBaseUrl
+        @Value("${stackoverflow.base.url:STACKOVERFLOW_BASE_URL}") String stackoverflowBaseUrl,
+        @Value("${timeout.minutes}") int timeout
     ) {
-        return new StackOverflowClient(webClientBuilder, stackoverflowBaseUrl);
+        return new StackOverflowClient(webClientBuilder, stackoverflowBaseUrl, timeout);
     }
 
     @Bean
     public BotClient botClient(
         WebClient.Builder webClientBuilder,
-        @Value("${bot.base.url:BOT_BASE_URL}") String botBaseUrl
+        @Value("${bot.base.url:BOT_BASE_URL}") String botBaseUrl,
+        @Value("${timeout.minutes}") int timeout
     ) {
-        return new BotClient(webClientBuilder, botBaseUrl);
+        return new BotClient(webClientBuilder, botBaseUrl, timeout);
     }
 }

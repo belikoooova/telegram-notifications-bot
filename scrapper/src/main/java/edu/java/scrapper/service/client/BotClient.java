@@ -1,19 +1,22 @@
 package edu.java.scrapper.service.client;
 
+import edu.java.scrapper.entity.dto.ApiErrorResponse;
+import edu.java.scrapper.entity.dto.LinkUpdateRequest;
 import edu.java.scrapper.exception.ApiErrorResponseException;
 import java.time.Duration;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class BotClient {
-    private static final int TIMEOUT = 5;
     private final WebClient webClient;
+    private final int timeoutInMinutes;
 
     public BotClient(
         WebClient.Builder webClientBuilder,
-        String baseUrl
+        String baseUrl,
+        int timeoutInMinutes
     ) {
         this.webClient = webClientBuilder.baseUrl(baseUrl).build();
+        this.timeoutInMinutes = timeoutInMinutes;
     }
 
     public String sendUpdate(LinkUpdateRequest request) {
@@ -22,9 +25,9 @@ public class BotClient {
             .bodyValue(request)
             .retrieve()
             .onStatus(
-                status -> HttpStatus.BAD_REQUEST.equals(status) || HttpStatus.NOT_FOUND.equals(status),
+                status -> status.is4xxClientError() || status.is5xxServerError(),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ApiErrorResponseException::new)
             ).bodyToMono(String.class)
-            .block(Duration.ofSeconds(TIMEOUT));
+            .block(Duration.ofSeconds(timeoutInMinutes));
     }
 }

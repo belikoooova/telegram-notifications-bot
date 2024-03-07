@@ -4,6 +4,8 @@ app:
 scrapper:
   base:
     url: "http://localhost:8080/"
+  timeout:
+    minutes: 5
 
 spring:
   application:

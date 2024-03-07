@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GitHubClientTest {
     private static final String LOGIN = "belikoooova";
+    private static final int TIMEOUT = 5;
     private static final String TITLE = "tinkoff-course";
     private static final int HTTP_OK = 200;
     private static final OffsetDateTime DATE_TIME = OffsetDateTime.parse("2021-02-20T14:30:00Z");
@@ -32,7 +33,7 @@ class GitHubClientTest {
         WireMock.configureFor("localhost", wireMockServer.port());
 
         WebClient.Builder webClientBuilder = WebClient.builder();
-        gitHubClient = new GitHubClient(webClientBuilder, wireMockServer.baseUrl());
+        gitHubClient = new GitHubClient(webClientBuilder, wireMockServer.baseUrl(), TIMEOUT);
     }
 
     @Test

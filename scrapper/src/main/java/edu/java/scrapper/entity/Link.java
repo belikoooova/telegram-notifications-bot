@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.net.URI;
-import java.util.Random;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Link {
-    public static final Random RANDOM = new Random();
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -23,7 +21,5 @@ public class Link {
 
     public Link(URI url) {
         this.url = url;
-        this.id = RANDOM.nextLong(); // Temporary stub.
-        // Once the JPA repository is added, the id will be generated properly.
     }
 }

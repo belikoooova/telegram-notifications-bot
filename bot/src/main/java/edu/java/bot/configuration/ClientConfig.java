@@ -11,8 +11,9 @@ public class ClientConfig {
     @Bean
     public ScrapperClient scrapperClient(
         WebClient.Builder webClientBuilder,
-        @Value("${scrapper.base.url:SCRAPPER_BASE_URL}") String scrapperBaseUrl
+        @Value("${scrapper.base.url:SCRAPPER_BASE_URL}") String scrapperBaseUrl,
+        @Value("${timeout.minutes}") int timeout
     ) {
-        return new ScrapperClient(webClientBuilder, scrapperBaseUrl);
+        return new ScrapperClient(webClientBuilder, scrapperBaseUrl, timeout);
     }
 }

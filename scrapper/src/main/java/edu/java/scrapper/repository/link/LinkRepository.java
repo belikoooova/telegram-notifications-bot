@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface LinkRepository {
     Optional<Link> findByUrl(URI url);
 
-    void addLink(Link link);
+    Link addLink(Link link);
 
-    void deleteByUrl(URI url);
+    Link deleteByUrl(URI url);
 }

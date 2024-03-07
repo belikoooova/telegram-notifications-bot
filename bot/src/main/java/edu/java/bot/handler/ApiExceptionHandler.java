@@ -12,16 +12,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ApiExceptionHandler {
     private static final String BAD_REQUEST_DESCRIPTION = "Invalid request parameters";
-    private static final String BAD_REQUEST_CODE = "400";
     private static final String NOT_FOUND_DESCRIPTION = "Chat %d not found";
-    private static final String NOT_FOUND_CODE = "404";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return ResponseEntity.badRequest()
             .body(new ApiErrorResponse(
                 BAD_REQUEST_DESCRIPTION,
-                BAD_REQUEST_CODE,
+                String.valueOf(HttpStatus.BAD_REQUEST.value()),
                 e.getClass().getSimpleName(),
                 e.getMessage(),
                 Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).toList()
@@ -33,7 +31,7 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(new ApiErrorResponse(
                 NOT_FOUND_DESCRIPTION.formatted(e.getChatId()),
-                NOT_FOUND_CODE,
+                String.valueOf(HttpStatus.NOT_FOUND.value()),
                 e.getClass().getSimpleName(),
                 e.getMessage(),
                 Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).toList()
