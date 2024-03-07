@@ -31,10 +31,10 @@ class ListCommandTest {
 
     @InjectMocks
     private ListCommand listCommand;
-    private Update update = mock(Update.class);
-    private Message message = mock(Message.class);
-    private Chat chat = mock(Chat.class);
-    private ScrapperClient scrapperClient = mock(ScrapperClient.class);
+    private final Update update = mock(Update.class);
+    private final Message message = mock(Message.class);
+    private final Chat chat = mock(Chat.class);
+    private final ScrapperClient scrapperClient = mock(ScrapperClient.class);
 
     @BeforeEach
     void setUp() {
@@ -76,16 +76,14 @@ class ListCommandTest {
 
         verify(chatRepository).setChatState(CHAT_ID, ChatState.NONE);
         Assertions.assertEquals(CHAT_ID, result.getParameters().get("chat_id"));
-        String expectedText = "Here are the links I am tracking:" +
-            "\n- " +
-            "http://example1.com" +
-            "\n- " +
-            "http://example2.com";
-        String expectedTextReverted = "Here are the links I am tracking:" +
-            "\n- " +
-            "http://example2.com" +
-            "\n- " +
-            "http://example1.com";
+        String expectedText = """
+                Here are the links I am tracking:
+                - http://example1.com
+                - http://example2.com""";
+        String expectedTextReverted = """
+                Here are the links I am tracking:
+                - http://example2.com
+                - http://example1.com""";
         Assertions.assertTrue(expectedText.equals(result.getParameters().get("text"))
             || expectedTextReverted.equals(result.getParameters().get("text")));
     }

@@ -35,8 +35,6 @@ class HelpCommandTest {
 
     Message message = mock(Message.class);
     Chat chat = mock(Chat.class);
-    User user = mock(User.class);
-
     private Update mockUpdate;
 
     @BeforeEach
@@ -66,10 +64,10 @@ class HelpCommandTest {
         verify(chatRepository).setChatState(CHAT_ID, ChatState.NONE);
         assertEquals(CHAT_ID, response.getParameters().get("chat_id"));
 
-        String expectedMessage = "Here are the commands I can perform:\n" +
-            "command1" + " -> " + "Description1" +
-            ";\n" +
-            "command2" + " -> " + "Description2";
+        String expectedMessage = """
+                Here are the commands I can perform:
+                command1 -> Description1;
+                command2 -> Description2""";
 
         assertEquals(expectedMessage, response.getParameters().get("text"));
     }
