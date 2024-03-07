@@ -13,7 +13,7 @@ public class ClientConfig {
     @Bean
     public GitHubClient gitHubClient(
         WebClient.Builder webClientBuilder,
-        @Value("${github.base.url:https://api.github.com}") String githubBaseUrl
+        @Value("${github.base.url:GITHUB_BASE_URL}") String githubBaseUrl
     ) {
         return new GitHubClient(webClientBuilder, githubBaseUrl);
     }
@@ -21,7 +21,7 @@ public class ClientConfig {
     @Bean
     public StackOverflowClient stackOverflowClient(
         WebClient.Builder webClientBuilder,
-        @Value("${stackoverflow.base.url:https://api.stackexchange.com/2.3}") String stackoverflowBaseUrl
+        @Value("${stackoverflow.base.url:STACKOVERFLOW_BASE_URL}") String stackoverflowBaseUrl
     ) {
         return new StackOverflowClient(webClientBuilder, stackoverflowBaseUrl);
     }
@@ -29,7 +29,7 @@ public class ClientConfig {
     @Bean
     public BotClient botClient(
         WebClient.Builder webClientBuilder,
-        @Value("${bot.base.url:'http://localhost:8080'}") String botBaseUrl
+        @Value("${bot.base.url:BOT_BASE_URL}") String botBaseUrl
     ) {
         return new BotClient(webClientBuilder, botBaseUrl);
     }

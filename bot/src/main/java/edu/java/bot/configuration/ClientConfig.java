@@ -11,7 +11,7 @@ public class ClientConfig {
     @Bean
     public ScrapperClient scrapperClient(
         WebClient.Builder webClientBuilder,
-        @Value("${scrapper.base.url:'http://localhost:8080'}") String scrapperBaseUrl
+        @Value("${scrapper.base.url:SCRAPPER_BASE_URL}") String scrapperBaseUrl
     ) {
         return new ScrapperClient(webClientBuilder, scrapperBaseUrl);
     }

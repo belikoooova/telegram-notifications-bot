@@ -4,15 +4,15 @@ app:
 
 github:
   base:
-    url: https://api.github.com
+    url: "https://api.github.com"
 
 stackoverflow:
   base:
-    url: https://api.stackexchange.com/2.3
+    url: "https://api.stackexchange.com/2.3"
 
 bot:
   base:
-    url: "http://localhost:8080"
+    url: ${SCRAPPER_BASE_URL}
 
 spring:
   application:
