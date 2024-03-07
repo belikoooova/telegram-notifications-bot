@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/links")
 public class LinkController {
-    private static final String OK_POST = "Ссылка успешно добавлена";
-    private static final String OK_DELETE = "Ссылка успешно убрана";
+    private static final String OK_POST = "Link successfully added";
+    private static final String OK_DELETE = "Link successfully deleted";
     private final LinkService service;
 
     @GetMapping("/{chatId}")

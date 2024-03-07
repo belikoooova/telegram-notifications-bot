@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ChatExceptionHandler {
-    private static final String BAD_REQUEST_DESCRIPTION = "Некорректные параметры запроса";
+    private static final String BAD_REQUEST_DESCRIPTION = "Incorrect request parameters";
     private static final String BAD_REQUEST_CODE = "400";
-    private static final String NOT_FOUND_DESCRIPTION = "Чат %d не найден";
+    private static final String NOT_FOUND_DESCRIPTION = "Chat %d not founded";
     private static final String NOT_FOUND_CODE = "404";
-    private static final String CONFLICT_DESCRIPTION = "Чат %d уже существует";
+    private static final String CONFLICT_DESCRIPTION = "Chat %d already exists";
     private static final String CONFLICT_CODE = "409";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

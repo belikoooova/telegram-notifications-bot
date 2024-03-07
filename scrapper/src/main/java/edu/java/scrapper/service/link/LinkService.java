@@ -13,7 +13,6 @@ import edu.java.scrapper.repository.chat.ChatRepository;
 import edu.java.scrapper.repository.link.LinkRepository;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +27,7 @@ public class LinkService {
         List<LinkResponse> linkResponses = chat.getLinks()
             .stream()
             .map(link -> new LinkResponse(link.getId(), link.getUrl()))
-            .collect(Collectors.toList());
+            .toList();
         return new ListLinkResponse(linkResponses, linkResponses.size());
     }
 

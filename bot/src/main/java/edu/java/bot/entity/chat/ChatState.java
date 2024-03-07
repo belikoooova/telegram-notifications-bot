@@ -1,6 +1,6 @@
-package edu.java.bot.entity.user;
+package edu.java.bot.entity.chat;
 
-public enum UserState {
+public enum ChatState {
     NONE,
     AWAITING_TRACK_URL,
     AWAITING_UNTRACK_URL

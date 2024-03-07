@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
-    private static final String BAD_REQUEST_DESCRIPTION = "Некорректные параметры запроса";
+    private static final String BAD_REQUEST_DESCRIPTION = "Invalid request parameters";
     private static final String BAD_REQUEST_CODE = "400";
-    private static final String NOT_FOUND_DESCRIPTION = "Чат %d не найден";
+    private static final String NOT_FOUND_DESCRIPTION = "Chat %d not found";
     private static final String NOT_FOUND_CODE = "404";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

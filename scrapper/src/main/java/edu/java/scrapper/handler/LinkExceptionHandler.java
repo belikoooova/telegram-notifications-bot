@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class LinkExceptionHandler {
-    private static final String CONFLICT_DESCRIPTION = "Ссылка уже отслеживается";
+    private static final String CONFLICT_DESCRIPTION = "Link is already being tracked";
     private static final String CONFLICT_CODE = "409";
-    private static final String NOT_FOUND_DESCRIPTION = "Ссылка не найдена";
+    private static final String NOT_FOUND_DESCRIPTION = "Link not found";
     private static final String NOT_FOUND_CODE = "404";
 
     @ExceptionHandler(LinkAlreadyTracksException.class)

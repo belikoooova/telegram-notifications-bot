@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/tg-chat")
 public class ChatController {
-    private static final String OK_POST = "Чат зарегистрирован";
-    private static final String OK_DELETE = "Чат успешно удалён";
+    private static final String OK_POST = "Chat registered";
+    private static final String OK_DELETE = "Chat successfully deleted";
     private final ChatService service;
 
     @PostMapping("/{id}")

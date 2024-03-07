@@ -5,7 +5,8 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.repository.user.UserRepository;
+import edu.java.bot.entity.chat.ChatState;
+import edu.java.bot.repository.chat.ChatRepository;
 import edu.java.bot.service.command.Command;
 import edu.java.bot.service.command.HelpCommand;
 import java.util.Arrays;
@@ -22,10 +23,9 @@ import static org.mockito.Mockito.when;
 
 class HelpCommandTest {
     private static final long CHAT_ID = 123L;
-    private static final long USER_ID = 1;
 
     @Mock
-    private UserRepository userRepository = mock(UserRepository.class);
+    private ChatRepository chatRepository = mock(ChatRepository.class);
 
     @Mock
     private Command command1, command2;
@@ -48,8 +48,6 @@ class HelpCommandTest {
         when(mockUpdate.message()).thenReturn(message);
         when(message.chat()).thenReturn(chat);
         when(chat.id()).thenReturn(CHAT_ID);
-        when(message.from()).thenReturn(user);
-        when(user.id()).thenReturn(USER_ID);
 
         when(command1.command()).thenReturn("command1");
         when(command1.description()).thenReturn("Description1");
@@ -57,7 +55,7 @@ class HelpCommandTest {
         when(command2.description()).thenReturn("Description2");
 
         List<Command> commands = Arrays.asList(command1, command2);
-        helpCommand = new HelpCommand(commands, userRepository);
+        helpCommand = new HelpCommand(commands, chatRepository);
     }
 
     @Test
@@ -65,7 +63,7 @@ class HelpCommandTest {
     void testHelpCommandHandle() {
         SendMessage response = helpCommand.handle(mockUpdate);
 
-        verify(userRepository).clearUserState(USER_ID);
+        verify(chatRepository).setChatState(CHAT_ID, ChatState.NONE);
         assertEquals(CHAT_ID, response.getParameters().get("chat_id"));
 
         String expectedMessage = "Here are the commands I can perform:\n" +

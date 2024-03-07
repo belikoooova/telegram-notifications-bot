@@ -29,7 +29,7 @@ public class ClientConfig {
     @Bean
     public BotClient botClient(
         WebClient.Builder webClientBuilder,
-        @Value("${bot.base.url:localhost:8080}") String botBaseUrl
+        @Value("${bot.base.url:'http://localhost:8080'}") String botBaseUrl
     ) {
         return new BotClient(webClientBuilder, botBaseUrl);
     }

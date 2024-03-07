@@ -1,4 +1,4 @@
-package edu.java.bot.entity.link;
+package edu.java.bot.service.validation;
 
 import java.util.regex.Pattern;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum TrackingResource {
     GITHUB(Pattern.compile("github\\.com/(([A-Z0-9_-]+)/([A-Z0-9_-]+))/?", Pattern.CASE_INSENSITIVE)),
-    STACKOVERFLOW(Pattern.compile("stackoverflow\\.com/questions/(\\d+)", Pattern.CASE_INSENSITIVE));
+    STACKOVERFLOW(Pattern.compile("stackoverflow\\.com/(questions/\\d+)", Pattern.CASE_INSENSITIVE));
 
     private final Pattern regex;
 
@@ -27,7 +27,7 @@ public enum TrackingResource {
         };
     }
 
-    public int idOnResourceGroupNumber() {
+    public int pathOnResourceGroupNumber() {
         return switch (this) {
             case GITHUB, STACKOVERFLOW -> 1;
         };
