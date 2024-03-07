@@ -2,10 +2,6 @@ package edu.java.scrapper.service.link;
 
 import edu.java.scrapper.entity.Chat;
 import edu.java.scrapper.entity.Link;
-import edu.java.scrapper.entity.dto.AddLinkRequest;
-import edu.java.scrapper.entity.dto.LinkResponse;
-import edu.java.scrapper.entity.dto.ListLinkResponse;
-import edu.java.scrapper.entity.dto.RemoveLinkRequest;
 import edu.java.scrapper.exception.LinkAlreadyTracksException;
 import edu.java.scrapper.exception.NoSuchChatException;
 import edu.java.scrapper.exception.NoSuchLinkException;

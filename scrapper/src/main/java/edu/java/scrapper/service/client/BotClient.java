@@ -1,7 +1,5 @@
 package edu.java.scrapper.service.client;
 
-import edu.java.scrapper.entity.dto.ApiErrorResponse;
-import edu.java.scrapper.entity.dto.LinkUpdateRequest;
 import edu.java.scrapper.exception.ApiErrorResponseException;
 import java.time.Duration;
 import org.springframework.http.HttpStatus;

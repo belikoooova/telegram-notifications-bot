@@ -1,15 +1,9 @@
 package edu.java.bot.entity.dto;
 
 import java.net.URI;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class AddLinkRequest {
-    private URI url;
+    private final URI url;
 }

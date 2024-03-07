@@ -1,19 +1,14 @@
 package edu.java.bot.entity.dto;
 
+import lombok.Data;
+
 import java.net.URI;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class LinkUpdateRequest {
-    private Long id;
-    private URI url;
-    private String description;
-    private List<Long> tgChatIds;
+    private final Long id;
+    private final URI url;
+    private final String description;
+    private final List<Long> tgChatIds;
 }

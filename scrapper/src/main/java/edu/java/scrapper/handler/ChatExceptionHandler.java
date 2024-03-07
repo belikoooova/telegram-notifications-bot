@@ -1,6 +1,5 @@
 package edu.java.scrapper.handler;
 
-import edu.java.scrapper.entity.dto.ApiErrorResponse;
 import edu.java.scrapper.exception.ChatAlreadyExistsException;
 import edu.java.scrapper.exception.NoSuchChatException;
 import java.util.Arrays;

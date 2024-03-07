@@ -1,16 +1,11 @@
 package edu.java.bot.entity.dto;
 
-import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+import java.util.List;
+
+@Data
 public class ListLinkResponse {
-    private List<LinkResponse> links;
-    private Integer size;
+    private final List<LinkResponse> links;
+    private final Integer size;
 }

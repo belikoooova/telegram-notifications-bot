@@ -1,19 +1,13 @@
 package edu.java.bot.entity.dto;
 
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class ApiErrorResponse {
-    private String description;
-    private String code;
-    private String exceptionName;
-    private String exceptionMessage;
-    private List<String> stacktrace;
+    private final String description;
+    private final String code;
+    private final String exceptionName;
+    private final String exceptionMessage;
+    private final List<String> stacktrace;
 }

@@ -1,6 +1,5 @@
 package edu.java.scrapper.handler;
 
-import edu.java.scrapper.entity.dto.ApiErrorResponse;
 import edu.java.scrapper.exception.LinkAlreadyTracksException;
 import edu.java.scrapper.exception.NoSuchLinkException;
 import java.util.Arrays;

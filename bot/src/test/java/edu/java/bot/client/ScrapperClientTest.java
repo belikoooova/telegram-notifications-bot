@@ -115,8 +115,7 @@ class ScrapperClientTest {
 
     @Test
     void testTrackLink() {
-        AddLinkRequest request = new AddLinkRequest();
-        request.setUrl(URI.create("http://example.com"));
+        AddLinkRequest request = new AddLinkRequest(URI.create("http://example.com"));
         wireMockServer.stubFor(post(urlEqualTo("/links/" + EXISTING_CHAT_ID))
             .willReturn(aResponse()
                 .withBody("Ссылка успешно добавлена")
@@ -128,8 +127,7 @@ class ScrapperClientTest {
 
     @Test
     void testTrackAlreadyTrackingLink() {
-        AddLinkRequest request = new AddLinkRequest();
-        request.setUrl(URI.create("http://example.com"));
+        AddLinkRequest request = new AddLinkRequest(URI.create("http://example.com"));
         wireMockServer.stubFor(post(urlEqualTo("/links/" + EXISTING_CHAT_ID))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
@@ -150,8 +148,7 @@ class ScrapperClientTest {
 
     @Test
     void testUntrackLink() {
-        RemoveLinkRequest request = new RemoveLinkRequest();
-        request.setUrl(URI.create("http://example.com"));
+        RemoveLinkRequest request = new RemoveLinkRequest(URI.create("http://example.com"));
         wireMockServer.stubFor(delete(urlEqualTo("/links/" + EXISTING_CHAT_ID))
             .willReturn(aResponse()
                 .withBody("Ссылка успешно удалена")
@@ -163,8 +160,7 @@ class ScrapperClientTest {
 
     @Test
     void testUntrackNotExistingLink() {
-        RemoveLinkRequest request = new RemoveLinkRequest();
-        request.setUrl(URI.create("http://example.com"));
+        RemoveLinkRequest request = new RemoveLinkRequest(URI.create("http://example.com"));
         wireMockServer.stubFor(delete(urlEqualTo("/links/" + EXISTING_CHAT_ID))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")

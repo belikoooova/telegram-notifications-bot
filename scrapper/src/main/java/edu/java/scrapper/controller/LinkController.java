@@ -1,8 +1,5 @@
 package edu.java.scrapper.controller;
 
-import edu.java.scrapper.entity.dto.AddLinkRequest;
-import edu.java.scrapper.entity.dto.ListLinkResponse;
-import edu.java.scrapper.entity.dto.RemoveLinkRequest;
 import edu.java.scrapper.service.link.LinkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
