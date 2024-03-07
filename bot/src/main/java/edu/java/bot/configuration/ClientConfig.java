@@ -12,7 +12,7 @@ public class ClientConfig {
     public ScrapperClient scrapperClient(
         WebClient.Builder webClientBuilder,
         @Value("${scrapper.base.url:SCRAPPER_BASE_URL}") String scrapperBaseUrl,
-        @Value("${timeout.minutes}") int timeout
+        @Value("${scrapper.timeout.minutes}") int timeout
     ) {
         return new ScrapperClient(webClientBuilder, scrapperBaseUrl, timeout);
     }

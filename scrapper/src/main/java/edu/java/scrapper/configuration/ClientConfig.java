@@ -14,7 +14,7 @@ public class ClientConfig {
     public GitHubClient gitHubClient(
         WebClient.Builder webClientBuilder,
         @Value("${github.base.url:GITHUB_BASE_URL}") String githubBaseUrl,
-        @Value("${timeout.minutes}") int timeout
+        @Value("${github.timeout.minutes}") int timeout
     ) {
         return new GitHubClient(webClientBuilder, githubBaseUrl, timeout);
     }
@@ -23,7 +23,7 @@ public class ClientConfig {
     public StackOverflowClient stackOverflowClient(
         WebClient.Builder webClientBuilder,
         @Value("${stackoverflow.base.url:STACKOVERFLOW_BASE_URL}") String stackoverflowBaseUrl,
-        @Value("${timeout.minutes}") int timeout
+        @Value("${stackowerflow.timeout.minutes}") int timeout
     ) {
         return new StackOverflowClient(webClientBuilder, stackoverflowBaseUrl, timeout);
     }
@@ -32,7 +32,7 @@ public class ClientConfig {
     public BotClient botClient(
         WebClient.Builder webClientBuilder,
         @Value("${bot.base.url:BOT_BASE_URL}") String botBaseUrl,
-        @Value("${timeout.minutes}") int timeout
+        @Value("${bot.timeout.minutes}") int timeout
     ) {
         return new BotClient(webClientBuilder, botBaseUrl, timeout);
     }

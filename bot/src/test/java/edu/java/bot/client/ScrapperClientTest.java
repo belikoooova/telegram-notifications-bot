@@ -66,17 +66,20 @@ class ScrapperClientTest {
         wireMockServer.stubFor(delete(urlEqualTo("/tg-chat/" + NOT_EXISTING_CHAT_ID))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
-                .withBody("{\n" +
-                    "  \"description\": \"Чат 2 не найден\",\n" +
-                    "  \"code\": \"404\",\n" +
-                    "  \"exceptionName\": \"NoSuchChatException\",\n" +
-                    "  \"exceptionMessage\": null,\n" +
-                    "  \"stacktrace\": []\n}")
+                .withBody("""
+                        {
+                          "description": "Чат 2 не найден",
+                          "code": "404",
+                          "exceptionName": "NoSuchChatException",
+                          "exceptionMessage": null,
+                          "stacktrace": []
+                        }""")
                 .withStatus(HttpStatus.NOT_FOUND.value())));
 
-        ApiErrorResponseException exception = assertThrows(ApiErrorResponseException.class, () -> {
-            scrapperClient.deleteChat(NOT_EXISTING_CHAT_ID);
-        });
+        ApiErrorResponseException exception = assertThrows(
+            ApiErrorResponseException.class,
+            () -> scrapperClient.deleteChat(NOT_EXISTING_CHAT_ID)
+        );
 
         assertEquals("Чат 2 не найден", exception.getApiErrorResponse().getDescription());
     }
@@ -86,17 +89,20 @@ class ScrapperClientTest {
         wireMockServer.stubFor(post(urlEqualTo("/tg-chat/" + EXISTING_CHAT_ID))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
-                .withBody("{\n" +
-                    "  \"description\": \"Чат 1 уже существует\",\n" +
-                    "  \"code\": \"409\",\n" +
-                    "  \"exceptionName\": \"ChatAlreadyExistsException\",\n" +
-                    "  \"exceptionMessage\": null,\n" +
-                    "  \"stacktrace\": []\n}")
+                .withBody("""
+                        {
+                          "description": "Чат 1 уже существует",
+                          "code": "409",
+                          "exceptionName": "ChatAlreadyExistsException",
+                          "exceptionMessage": null,
+                          "stacktrace": []
+                        }""")
                 .withStatus(HttpStatus.CONFLICT.value())));
 
-        ApiErrorResponseException exception = assertThrows(ApiErrorResponseException.class, () -> {
-            scrapperClient.registerChat(EXISTING_CHAT_ID);
-        });
+        ApiErrorResponseException exception = assertThrows(
+            ApiErrorResponseException.class,
+            () -> scrapperClient.registerChat(EXISTING_CHAT_ID)
+        );
 
         assertEquals("Чат 1 уже существует", exception.getApiErrorResponse().getDescription());
     }
@@ -132,17 +138,20 @@ class ScrapperClientTest {
         wireMockServer.stubFor(post(urlEqualTo("/links/" + EXISTING_CHAT_ID))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
-                .withBody("{\n" +
-                    "  \"description\": \"Ссылка уже отслеживается\",\n" +
-                    "  \"code\": \"409\",\n" +
-                    "  \"exceptionName\": \"LinkAlreadyTracksException\",\n" +
-                    "  \"exceptionMessage\": null,\n" +
-                    "  \"stacktrace\": []\n}")
+                .withBody("""
+                        {
+                          "description": "Ссылка уже отслеживается",
+                          "code": "409",
+                          "exceptionName": "LinkAlreadyTracksException",
+                          "exceptionMessage": null,
+                          "stacktrace": []
+                        }""")
                 .withStatus(HttpStatus.CONFLICT.value())));
 
-        ApiErrorResponseException exception = assertThrows(ApiErrorResponseException.class, () -> {
-            scrapperClient.trackLink(EXISTING_CHAT_ID, request);
-        });
+        ApiErrorResponseException exception = assertThrows(
+            ApiErrorResponseException.class,
+            () -> scrapperClient.trackLink(EXISTING_CHAT_ID, request)
+        );
 
         assertEquals("Ссылка уже отслеживается", exception.getApiErrorResponse().getDescription());
     }
@@ -165,17 +174,20 @@ class ScrapperClientTest {
         wireMockServer.stubFor(delete(urlEqualTo("/links/" + EXISTING_CHAT_ID))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
-                .withBody("{\n" +
-                    "  \"description\": \"Ссылка не найдена\",\n" +
-                    "  \"code\": \"404\",\n" +
-                    "  \"exceptionName\": \"NoSuchLinkException\",\n" +
-                    "  \"exceptionMessage\": null,\n" +
-                    "  \"stacktrace\": []\n}")
+                .withBody("""
+                        {
+                          "description": "Ссылка не найдена",
+                          "code": "404",
+                          "exceptionName": "NoSuchLinkException",
+                          "exceptionMessage": null,
+                          "stacktrace": []
+                        }""")
                 .withStatus(HttpStatus.NOT_FOUND.value())));
 
-        ApiErrorResponseException exception = assertThrows(ApiErrorResponseException.class, () -> {
-            scrapperClient.untrackLink(EXISTING_CHAT_ID, request);
-        });
+        ApiErrorResponseException exception = assertThrows(
+            ApiErrorResponseException.class,
+            () -> scrapperClient.untrackLink(EXISTING_CHAT_ID, request)
+        );
 
         assertEquals("Ссылка не найдена", exception.getApiErrorResponse().getDescription());
     }
