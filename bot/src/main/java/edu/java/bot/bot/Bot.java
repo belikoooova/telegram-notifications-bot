@@ -26,13 +26,13 @@ public class Bot implements AutoCloseable, UpdatesListener {
         start();
     }
 
-    public <T extends BaseRequest<T, R>, R extends BaseResponse> void execute(BaseRequest<T, R> request) {
-        telegramBot.execute(request);
+    public <T extends BaseRequest<T, R>, R extends BaseResponse> R execute(BaseRequest<T, R> request) {
+        return telegramBot.execute(request);
     }
 
     @Override
     public int process(List<Update> updates) {
-        for (Update update: updates) {
+        for (Update update : updates) {
             if (update == null || update.message() == null) {
                 continue;
             }

@@ -1,6 +1,12 @@
 app:
   telegram-token: ${BOT_TOKEN}
 
+scrapper:
+  base:
+    url: "http://localhost:8080/"
+  timeout:
+    minutes: 5
+
 spring:
   application:
     name: bot

@@ -2,7 +2,8 @@ package edu.java.bot.service.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.repository.user.UserRepository;
+import edu.java.bot.repository.chat.ChatRepository;
+import edu.java.bot.service.client.ScrapperClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,8 @@ public class StartCommand implements Command {
     private static final String DESCRIPTION = "register user";
     private static final String ANSWER = "Hello! This bot will help you track updates on the resources you need "
         + "(currently supports StackOverflow and GitHub). Type /help to see the list of commands.";
-    private final UserRepository userRepository;
+    private final ChatRepository chatRepository;
+    private final ScrapperClient scrapperClient;
 
     @Override
     public String command() {
@@ -27,7 +29,9 @@ public class StartCommand implements Command {
 
     @Override
     public SendMessage handle(Update update) {
-        userRepository.addEmptyUserWithId(update.message().from().id());
-        return new SendMessage(update.message().chat().id(), ANSWER);
+        Long chatId = update.message().from().id();
+        scrapperClient.registerChat(chatId);
+        chatRepository.addEmptyChatWithId(chatId);
+        return new SendMessage(chatId, ANSWER);
     }
 }

@@ -2,7 +2,8 @@ package edu.java.bot.service.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.repository.user.UserRepository;
+import edu.java.bot.entity.chat.ChatState;
+import edu.java.bot.repository.chat.ChatRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ public class HelpCommand implements Command {
     private static final String LINES_SEPARATOR = ";\n";
 
     private final List<Command> commands;
-    private final UserRepository userRepository;
+    private final ChatRepository chatRepository;
 
     @Override
     public String command() {
@@ -31,8 +32,9 @@ public class HelpCommand implements Command {
 
     @Override
     public SendMessage handle(Update update) {
-        userRepository.clearUserState(update.message().from().id());
-        return new SendMessage(update.message().chat().id(), getAnswer());
+        Long chatId = update.message().chat().id();
+        chatRepository.setChatState(chatId, ChatState.NONE);
+        return new SendMessage(chatId, getAnswer());
     }
 
     private String getAnswer() {

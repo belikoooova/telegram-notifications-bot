@@ -4,15 +4,29 @@ app:
 
 github:
   base:
-    url: https://api.github.com
+    url: "https://api.github.com"
+  timeout:
+    minutes: 5
 
 stackoverflow:
   base:
-    url: https://api.stackexchange.com/2.3
+    url: "https://api.stackexchange.com/2.3"
+  timeout:
+    minutes: 5
+
+bot:
+  base:
+    url: ${SCRAPPER_BASE_URL}
+  timeout:
+    minutes: 5
 
 spring:
   application:
     name: scrapper
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
 
 server:
   port: 8080

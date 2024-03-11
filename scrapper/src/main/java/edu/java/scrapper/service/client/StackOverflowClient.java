@@ -1,18 +1,20 @@
 package edu.java.scrapper.service.client;
 
-import edu.java.scrapper.service.client.model.QuestionResponse;
+import edu.java.scrapper.entity.dto.QuestionResponse;
 import java.time.Duration;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class StackOverflowClient {
-    private static final int TIMEOUT = 5;
+    private final int timeout;
     private final WebClient webClient;
 
     public StackOverflowClient(
         WebClient.Builder webClientBuilder,
-        String baseUrl
+        String baseUrl,
+        int timeout
     ) {
         this.webClient = webClientBuilder.baseUrl(baseUrl).build();
+        this.timeout = timeout;
     }
 
     public QuestionResponse fetchQuestion(Long questionId) {
@@ -20,6 +22,6 @@ public class StackOverflowClient {
             .uri("/questions/{questionId}?order=desc&sort=activity&site=stackoverflow", questionId)
             .retrieve()
             .bodyToMono(QuestionResponse.class)
-            .block(Duration.ofSeconds(TIMEOUT));
+            .block(Duration.ofSeconds(timeout));
     }
 }
