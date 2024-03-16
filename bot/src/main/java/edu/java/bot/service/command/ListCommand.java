@@ -5,7 +5,6 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.entity.chat.ChatState;
 import edu.java.bot.entity.dto.LinkResponse;
 import edu.java.bot.entity.dto.ListLinkResponse;
-import edu.java.bot.repository.chat.ChatRepository;
 import edu.java.bot.service.chat.ChatService;
 import edu.java.bot.service.client.ScrapperClient;
 import lombok.RequiredArgsConstructor;

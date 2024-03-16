@@ -1,10 +1,9 @@
 package edu.java.bot.repository.jdbc;
 
 import edu.java.bot.entity.chat.Chat;
-import java.util.List;
 import edu.java.bot.entity.chat.ChatState;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -18,16 +17,16 @@ public class JdbcChatRepository {
     private static final String FIND_ALL_QUERY = "select * from chat_state";
     private static final String SET_CHAT_STATE = "update chat_state cs set state=?::chatstate where cs.id=?";
     private static final String GET_CHAT_STATE = "select state from chat_state where id=?";
-    private static final RowMapper<Chat> MAPPER = new BeanPropertyRowMapper<>(Chat.class);
-    private static final RowMapper<ChatState> CHAT_STATE_MAPPER = new BeanPropertyRowMapper<>(ChatState.class);
 
+    private final RowMapper<Chat> mapper;
+    private final RowMapper<ChatState> chatStateMapper;
     private final JdbcTemplate jdbcTemplate;
 
     @Transactional
     public Chat add(Chat chat) {
         return jdbcTemplate.queryForObject(
             ADD_QUERY,
-            MAPPER,
+            mapper,
             chat.getId(),
             chat.getState().name()
         );
@@ -37,7 +36,7 @@ public class JdbcChatRepository {
     public Chat remove(Chat chat) {
         return jdbcTemplate.queryForObject(
             DELETE_QUERY,
-            MAPPER,
+            mapper,
             chat.getId()
         );
     }
@@ -46,7 +45,7 @@ public class JdbcChatRepository {
     public List<Chat> findAll() {
         return jdbcTemplate.query(
             FIND_ALL_QUERY,
-            MAPPER
+            mapper
         );
     }
 
@@ -63,7 +62,7 @@ public class JdbcChatRepository {
     public ChatState getChatState(Long chatId) {
         return jdbcTemplate.queryForObject(
             GET_CHAT_STATE,
-            CHAT_STATE_MAPPER,
+            chatStateMapper,
             chatId
         );
     }

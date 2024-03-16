@@ -77,4 +77,29 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
             () -> chatRepository.remove(inserted)
         );
     }
+
+    @Test
+    @Transactional
+    @Rollback
+    void testGetChatState() {
+        Chat chat = new Chat(EXAMPLE_ID_1);
+        Chat inserted = chatRepository.add(chat);
+
+        ChatState result = chatRepository.getChatState(inserted.getId());
+
+        assertEquals(ChatState.NONE, result);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void testSetChatState() {
+        Chat chat = new Chat(EXAMPLE_ID_1);
+        Chat inserted = chatRepository.add(chat);
+        chatRepository.setChatState(chat.getId(), ChatState.AWAITING_TRACK_URL);
+
+        ChatState result = chatRepository.getChatState(inserted.getId());
+
+        assertEquals(ChatState.AWAITING_TRACK_URL, result);
+    }
 }

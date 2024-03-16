@@ -1,10 +1,10 @@
 package edu.java.scrapper.repository.jdbc;
 
 import edu.java.scrapper.entity.Link;
+import edu.java.scrapper.exception.LinkNotTrackedException;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-import edu.java.scrapper.exception.LinkNotTrackedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -19,9 +19,9 @@ public class JdbcLinkRepository {
     private static final String ADD_QUERY = "insert into link (url, last_checked_at) values (?, ?) returning *";
     private static final String DELETE_QUERY = "delete from link where id=? returning *";
     private static final String FIND_ALL_QUERY = "select * from link";
-    private static final String FIND_ALL_LINKS_BY_CHAT_ID = "select * from link l " +
-                                                            "join chat_link cl on l.id=cl.link_id " +
-                                                            "where cl.chat_id=?";
+    private static final String FIND_ALL_LINKS_BY_CHAT_ID = "select * from link l "
+        + "join chat_link cl on l.id=cl.link_id "
+        + "where cl.chat_id=?";
     private static final String CONNECT_LINK_TO_CHAT = "insert into chat_link (link_id, chat_id) values (?, ?)";
     private static final String DISCONNECT_LINK_FROM_CHAT = "delete from chat_link where link_id=? and chat_id=?";
     private static final String FIND_BY_URL = "select * from link l where l.url=?";

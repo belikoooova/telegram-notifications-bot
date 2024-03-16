@@ -2,7 +2,6 @@ package edu.java.scrapper.repository.jdbc;
 
 import edu.java.scrapper.entity.Chat;
 import java.util.List;
-import edu.java.scrapper.entity.Link;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

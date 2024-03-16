@@ -2,7 +2,6 @@ package edu.java.bot.service.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.repository.chat.ChatRepository;
 import edu.java.bot.service.chat.ChatService;
 import edu.java.bot.service.client.ScrapperClient;
 import lombok.RequiredArgsConstructor;

@@ -1,12 +1,15 @@
 package edu.java.scrapper.integration;
 
+import edu.java.scrapper.entity.Chat;
 import edu.java.scrapper.entity.Link;
+import edu.java.scrapper.repository.jdbc.JdbcChatRepository;
 import edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,9 +27,12 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     private static final URI EXAMPLE_URI_2 = URI.create("http://example2.com");
     private static final OffsetDateTime DATE = OffsetDateTime.now();
     private static final int ADDED_LINKS_AMOUNT = 2;
+    private static final long EXAMPLE_ID_1 = 1;
 
     @Autowired
     private JdbcLinkRepository linkRepository;
+    @Autowired
+    private JdbcChatRepository chatRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -98,6 +104,95 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             org.springframework.dao.EmptyResultDataAccessException.class,
             () -> linkRepository.remove(inserted)
         );
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void testConnectLinkToChat() {
+        Link link1 = Link.builder()
+            .url(EXAMPLE_URI_1)
+            .lastCheckedAt(DATE)
+            .build();
+        Link link2 = Link.builder()
+            .url(EXAMPLE_URI_2)
+            .lastCheckedAt(DATE)
+            .build();
+        Link insertedLink1 = linkRepository.add(link1);
+        Link insertedLink2 = linkRepository.add(link2);
+        Chat chat = new Chat(EXAMPLE_ID_1);
+        chatRepository.add(chat);
+
+        linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
+        linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink2.getId());
+
+        assertEquals(ADDED_LINKS_AMOUNT, linkRepository.findAllLinksByChatId(EXAMPLE_ID_1).size());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void testFindAllLinksByChatId() {
+        Link link1 = Link.builder()
+            .url(EXAMPLE_URI_1)
+            .lastCheckedAt(DATE)
+            .build();
+        Link link2 = Link.builder()
+            .url(EXAMPLE_URI_2)
+            .lastCheckedAt(DATE)
+            .build();
+        Link insertedLink1 = linkRepository.add(link1);
+        Link insertedLink2 = linkRepository.add(link2);
+        Chat chat = new Chat(EXAMPLE_ID_1);
+        chatRepository.add(chat);
+
+        linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
+        linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink2.getId());
+        List<Link> addedLinks = linkRepository.findAllLinksByChatId(EXAMPLE_ID_1);
+
+        assertEquals(ADDED_LINKS_AMOUNT, addedLinks.size());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void testDisconnectLinkToChat() {
+        Link link1 = Link.builder()
+            .url(EXAMPLE_URI_1)
+            .lastCheckedAt(DATE)
+            .build();
+        Link link2 = Link.builder()
+            .url(EXAMPLE_URI_2)
+            .lastCheckedAt(DATE)
+            .build();
+        Link insertedLink1 = linkRepository.add(link1);
+        Link insertedLink2 = linkRepository.add(link2);
+        Chat chat = new Chat(EXAMPLE_ID_1);
+        chatRepository.add(chat);
+        linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
+        linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink2.getId());
+
+        linkRepository.disconnectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
+
+        assertEquals(1, linkRepository.findAllLinksByChatId(EXAMPLE_ID_1).size());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void testFindLinkByUrl() {
+        Link link1 = Link.builder()
+            .url(EXAMPLE_URI_1)
+            .lastCheckedAt(DATE)
+            .build();
+        Link insertedLink1 = linkRepository.add(link1);
+
+        Optional<Link> optionalLink1 = linkRepository.findLinkByUrl(EXAMPLE_URI_1);
+        Optional<Link> optionalLink2 = linkRepository.findLinkByUrl(EXAMPLE_URI_2);
+
+        assertTrue(optionalLink1.isPresent());
+        assertEquals(optionalLink1.get().getId(), insertedLink1.getId());
+        assertTrue(optionalLink2.isEmpty());
     }
 
     private ZonedDateTime toZonedDateTime(OffsetDateTime dateTime) {

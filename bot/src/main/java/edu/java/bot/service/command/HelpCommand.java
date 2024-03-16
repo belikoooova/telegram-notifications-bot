@@ -3,9 +3,8 @@ package edu.java.bot.service.command;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.entity.chat.ChatState;
-import edu.java.bot.repository.chat.ChatRepository;
-import java.util.List;
 import edu.java.bot.service.chat.ChatService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

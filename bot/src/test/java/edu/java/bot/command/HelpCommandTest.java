@@ -6,6 +6,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.entity.chat.ChatState;
 import edu.java.bot.repository.chat.ChatRepository;
+import edu.java.bot.service.chat.ChatService;
 import edu.java.bot.service.command.Command;
 import edu.java.bot.service.command.HelpCommand;
 import java.util.Arrays;
@@ -24,7 +25,7 @@ class HelpCommandTest {
     private static final long CHAT_ID = 123L;
 
     @Mock
-    private ChatRepository chatRepository = mock(ChatRepository.class);
+    private ChatService chatService = mock(ChatService.class);
 
     @Mock
     private Command command1, command2;
@@ -52,7 +53,7 @@ class HelpCommandTest {
         when(command2.description()).thenReturn("Description2");
 
         List<Command> commands = Arrays.asList(command1, command2);
-        helpCommand = new HelpCommand(commands, chatRepository);
+        helpCommand = new HelpCommand(commands, chatService);
     }
 
     @Test
@@ -60,7 +61,7 @@ class HelpCommandTest {
     void testHelpCommandHandle() {
         SendMessage response = helpCommand.handle(mockUpdate);
 
-        verify(chatRepository).setChatState(CHAT_ID, ChatState.NONE);
+        verify(chatService).setChatState(CHAT_ID, ChatState.NONE);
         assertEquals(CHAT_ID, response.getParameters().get("chat_id"));
 
         String expectedMessage = """
