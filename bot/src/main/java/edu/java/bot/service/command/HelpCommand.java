@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.entity.chat.ChatState;
 import edu.java.bot.repository.chat.ChatRepository;
 import java.util.List;
+import edu.java.bot.service.chat.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +19,8 @@ public class HelpCommand implements Command {
     private static final String LINES_SEPARATOR = ";\n";
 
     private final List<Command> commands;
-    private final ChatRepository chatRepository;
+    // private final ChatRepository chatRepository;
+    private final ChatService chatService;
 
     @Override
     public String command() {
@@ -33,7 +35,7 @@ public class HelpCommand implements Command {
     @Override
     public SendMessage handle(Update update) {
         Long chatId = update.message().chat().id();
-        chatRepository.setChatState(chatId, ChatState.NONE);
+        chatService.setChatState(chatId, ChatState.NONE);
         return new SendMessage(chatId, getAnswer());
     }
 

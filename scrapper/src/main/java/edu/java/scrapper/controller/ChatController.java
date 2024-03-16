@@ -1,6 +1,6 @@
 package edu.java.scrapper.controller;
 
-import edu.java.scrapper.service.chat.ChatService;
+import edu.java.scrapper.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,13 +19,13 @@ public class ChatController {
 
     @PostMapping("/{id}")
     public ResponseEntity<String> registerChat(@PathVariable Long id) {
-        service.addChat(id);
+        service.register(id);
         return ResponseEntity.ok(OK_POST);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteChat(@PathVariable Long id) {
-        service.deleteChat(id);
+        service.unregister(id);
         return ResponseEntity.ok(OK_DELETE);
     }
 }

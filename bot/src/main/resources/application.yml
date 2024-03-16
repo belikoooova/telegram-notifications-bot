@@ -11,7 +11,7 @@ spring:
   jackson:
     time-zone: UTC
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/bot}
+    url: ${DB_URL:jdbc:postgresql://localhost:54321/bot}
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:postgres}
   liquibase:

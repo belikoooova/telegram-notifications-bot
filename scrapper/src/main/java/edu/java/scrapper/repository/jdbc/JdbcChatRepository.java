@@ -2,6 +2,7 @@ package edu.java.scrapper.repository.jdbc;
 
 import edu.java.scrapper.entity.Chat;
 import java.util.List;
+import edu.java.scrapper.entity.Link;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,7 +16,7 @@ public class JdbcChatRepository {
     private static final String ADD_QUERY = "insert into chat (id) values (?) returning *";
     private static final String DELETE_QUERY = "delete from chat where id=? returning *";
     private static final String FIND_ALL_QUERY = "select * from chat";
-    private static final RowMapper<Chat> MAPPER = new BeanPropertyRowMapper<>(Chat.class);
+    private static final RowMapper<Chat> CHAT_MAPPER = new BeanPropertyRowMapper<>(Chat.class);
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -23,7 +24,7 @@ public class JdbcChatRepository {
     public Chat add(Chat chat) {
         return jdbcTemplate.queryForObject(
             ADD_QUERY,
-            MAPPER,
+            CHAT_MAPPER,
             chat.getId()
         );
     }
@@ -32,7 +33,7 @@ public class JdbcChatRepository {
     public Chat remove(Chat chat) {
         return jdbcTemplate.queryForObject(
             DELETE_QUERY,
-            MAPPER,
+            CHAT_MAPPER,
             chat.getId()
         );
     }
@@ -41,7 +42,7 @@ public class JdbcChatRepository {
     public List<Chat> findAll() {
         return jdbcTemplate.query(
             FIND_ALL_QUERY,
-            MAPPER
+            CHAT_MAPPER
         );
     }
 }

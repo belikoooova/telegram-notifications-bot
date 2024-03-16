@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ChatService {
+public class ChatDeprService {
     private final ChatRepository repository;
 
     public void addChat(Long id) {
