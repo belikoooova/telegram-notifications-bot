@@ -1,23 +1,20 @@
 package edu.java.scrapper.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import java.net.URI;
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Link {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
     private Long id;
     private URI url;
+    private OffsetDateTime lastCheckedAt;
 
     public Link(URI url) {
         this.url = url;

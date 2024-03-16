@@ -1,3 +1,6 @@
+--liquibase formatted sql
+
+--changeset belikoooova:1
 create table chat_link
 (
     chat_id         bigint,

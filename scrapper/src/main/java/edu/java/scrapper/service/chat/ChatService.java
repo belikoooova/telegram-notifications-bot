@@ -4,7 +4,6 @@ import edu.java.scrapper.entity.Chat;
 import edu.java.scrapper.exception.ChatAlreadyExistsException;
 import edu.java.scrapper.exception.NoSuchChatException;
 import edu.java.scrapper.repository.chat.ChatRepository;
-import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ public class ChatService {
         if (repository.getChatByID(id).isPresent()) {
             throw new ChatAlreadyExistsException(id);
         }
-        repository.addChat(new Chat(id, new ArrayList<>()));
+        repository.addChat(new Chat(id));
     }
 
     public void deleteChat(Long id) {

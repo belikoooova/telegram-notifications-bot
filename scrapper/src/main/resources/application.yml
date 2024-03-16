@@ -1,32 +1,22 @@
 app:
   link-updater-scheduler:
     interval: 10s
-
-github:
-  base:
-    url: "https://api.github.com"
-  timeout:
-    minutes: 5
-
-stackoverflow:
-  base:
-    url: "https://api.stackexchange.com/2.3"
-  timeout:
-    minutes: 5
-
-bot:
-  base:
-    url: ${SCRAPPER_BASE_URL}
+  base-url:
+    git-hub: "https://api.github.com"
+    bot: ${BOT_BASE_URL:http://localhost:8080}
+    stack-overflow: "https://api.github.com"
   timeout:
     minutes: 5
 
 spring:
   application:
     name: scrapper
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/scrapper}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  liquibase:
+    enabled: false
 
 server:
   port: 8080

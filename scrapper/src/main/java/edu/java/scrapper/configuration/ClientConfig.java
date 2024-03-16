@@ -3,37 +3,46 @@ package edu.java.scrapper.configuration;
 import edu.java.scrapper.service.client.BotClient;
 import edu.java.scrapper.service.client.GitHubClient;
 import edu.java.scrapper.service.client.StackOverflowClient;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
+@RequiredArgsConstructor
 public class ClientConfig {
+    private final ApplicationConfig applicationConfig;
+
     @Bean
     public GitHubClient gitHubClient(
-        WebClient.Builder webClientBuilder,
-        @Value("${github.base.url:GITHUB_BASE_URL}") String githubBaseUrl,
-        @Value("${github.timeout.minutes}") int timeout
+        WebClient.Builder webClientBuilder
     ) {
-        return new GitHubClient(webClientBuilder, githubBaseUrl, timeout);
+        return new GitHubClient(
+            webClientBuilder,
+            applicationConfig.baseUrl().gitHub(),
+            applicationConfig.timeout().minutes()
+        );
     }
 
     @Bean
     public StackOverflowClient stackOverflowClient(
-        WebClient.Builder webClientBuilder,
-        @Value("${stackoverflow.base.url:STACKOVERFLOW_BASE_URL}") String stackoverflowBaseUrl,
-        @Value("${stackowerflow.timeout.minutes}") int timeout
+        WebClient.Builder webClientBuilder
     ) {
-        return new StackOverflowClient(webClientBuilder, stackoverflowBaseUrl, timeout);
+        return new StackOverflowClient(
+            webClientBuilder,
+            applicationConfig.baseUrl().stackOverflow(),
+            applicationConfig.timeout().minutes()
+        );
     }
 
     @Bean
     public BotClient botClient(
-        WebClient.Builder webClientBuilder,
-        @Value("${bot.base.url:BOT_BASE_URL}") String botBaseUrl,
-        @Value("${bot.timeout.minutes}") int timeout
+        WebClient.Builder webClientBuilder
     ) {
-        return new BotClient(webClientBuilder, botBaseUrl, timeout);
+        return new BotClient(
+            webClientBuilder,
+            applicationConfig.baseUrl().bot(),
+            applicationConfig.timeout().minutes()
+        );
     }
 }

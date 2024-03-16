@@ -8,6 +8,13 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
 public record ApplicationConfig(
     @NotEmpty
-    String telegramToken
+    String telegramToken,
+    Timeout timeout,
+    BaseUrl baseUrl
 ) {
+    public record Timeout(int minutes) {
+    }
+
+    public record BaseUrl(String scrapper) {
+    }
 }
