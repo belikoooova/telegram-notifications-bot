@@ -1,5 +1,6 @@
 package edu.java.scrapper.configuration;
 
+import edu.java.scrapper.service.LinkService;
 import edu.java.scrapper.service.client.BotClient;
 import edu.java.scrapper.service.client.GitHubClient;
 import edu.java.scrapper.service.client.StackOverflowClient;
@@ -12,13 +13,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequiredArgsConstructor
 public class ClientConfig {
     private final ApplicationConfig applicationConfig;
+    private final LinkService linkService;
 
     @Bean
     public GitHubClient gitHubClient(
         WebClient.Builder webClientBuilder
     ) {
         return new GitHubClient(
-            webClientBuilder,
+            linkService, webClientBuilder,
             applicationConfig.baseUrl().gitHub(),
             applicationConfig.timeout().minutes()
         );
@@ -29,7 +31,7 @@ public class ClientConfig {
         WebClient.Builder webClientBuilder
     ) {
         return new StackOverflowClient(
-            webClientBuilder,
+            linkService, webClientBuilder,
             applicationConfig.baseUrl().stackOverflow(),
             applicationConfig.timeout().minutes()
         );

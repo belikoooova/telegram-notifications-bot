@@ -2,6 +2,7 @@ package edu.java.scrapper.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import edu.java.scrapper.service.LinkService;
 import edu.java.scrapper.service.client.StackOverflowClient;
 import edu.java.scrapper.entity.dto.QuestionResponse;
 import org.junit.jupiter.api.AfterEach;
@@ -12,6 +13,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 class StackOverflowClientTest {
     private static final Long QUESTION_ID = 78023169L;
@@ -20,6 +22,7 @@ class StackOverflowClientTest {
 
     private WireMockServer wireMockServer;
     private StackOverflowClient stackOverflowClient;
+    private final LinkService linkService = mock(LinkService.class);
 
     @BeforeEach
     void setup() {
@@ -28,7 +31,7 @@ class StackOverflowClientTest {
         WireMock.configureFor("localhost", wireMockServer.port());
 
         WebClient.Builder webClientBuilder = WebClient.builder();
-        stackOverflowClient = new StackOverflowClient(webClientBuilder, wireMockServer.baseUrl(), TIMEOUT);
+        stackOverflowClient = new StackOverflowClient(linkService, webClientBuilder, wireMockServer.baseUrl(), TIMEOUT);
     }
 
     @Test

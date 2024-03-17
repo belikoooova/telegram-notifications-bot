@@ -43,6 +43,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
+            .lastUpdatedAt(DATE)
             .build();
 
         Link inserted = linkRepository.add(link);
@@ -50,6 +51,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         assertNotNull(inserted.getId());
         assertEquals(link.getUrl(), inserted.getUrl());
         assertEquals(toZonedDateTime(link.getLastCheckedAt()), toZonedDateTime(inserted.getLastCheckedAt()));
+        assertEquals(toZonedDateTime(link.getLastUpdatedAt()), toZonedDateTime(inserted.getLastUpdatedAt()));
     }
 
     @Test
@@ -59,10 +61,12 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
+            .lastUpdatedAt(DATE)
             .build();
         Link link2 = Link.builder()
             .url(EXAMPLE_URI_2)
             .lastCheckedAt(DATE)
+            .lastUpdatedAt(DATE)
             .build();
         linkRepository.add(link1);
         linkRepository.add(link2);
@@ -79,6 +83,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
+            .lastUpdatedAt(DATE)
             .build();
         Link inserted = linkRepository.add(link);
 
@@ -96,6 +101,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
+            .lastUpdatedAt(DATE)
             .build();
         Link inserted = linkRepository.add(link);
         linkRepository.remove(inserted);
@@ -113,10 +119,12 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
+            .lastUpdatedAt(DATE)
             .build();
         Link link2 = Link.builder()
             .url(EXAMPLE_URI_2)
             .lastCheckedAt(DATE)
+            .lastUpdatedAt(DATE)
             .build();
         Link insertedLink1 = linkRepository.add(link1);
         Link insertedLink2 = linkRepository.add(link2);
@@ -136,10 +144,12 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
+            .lastUpdatedAt(DATE)
             .build();
         Link link2 = Link.builder()
             .url(EXAMPLE_URI_2)
             .lastCheckedAt(DATE)
+            .lastUpdatedAt(DATE)
             .build();
         Link insertedLink1 = linkRepository.add(link1);
         Link insertedLink2 = linkRepository.add(link2);
@@ -160,10 +170,12 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
+            .lastUpdatedAt(DATE)
             .build();
         Link link2 = Link.builder()
             .url(EXAMPLE_URI_2)
             .lastCheckedAt(DATE)
+            .lastUpdatedAt(DATE)
             .build();
         Link insertedLink1 = linkRepository.add(link1);
         Link insertedLink2 = linkRepository.add(link2);
@@ -184,6 +196,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
+            .lastUpdatedAt(DATE)
             .build();
         Link insertedLink1 = linkRepository.add(link1);
 

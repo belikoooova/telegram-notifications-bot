@@ -1,6 +1,6 @@
 app:
   link-updater-scheduler:
-    interval: 10s
+    interval: 60s
   base-url:
     git-hub: "https://api.github.com"
     bot: ${BOT_BASE_URL:"http://localhost:8080"}

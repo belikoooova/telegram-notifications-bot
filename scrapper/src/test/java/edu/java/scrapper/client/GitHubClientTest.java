@@ -2,6 +2,7 @@ package edu.java.scrapper.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import edu.java.scrapper.service.LinkService;
 import edu.java.scrapper.service.client.GitHubClient;
 import edu.java.scrapper.entity.dto.RepositoryResponse;
 import org.junit.jupiter.api.AfterEach;
@@ -15,6 +16,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 class GitHubClientTest {
     private static final String LOGIN = "belikoooova";
@@ -25,6 +27,7 @@ class GitHubClientTest {
 
     private WireMockServer wireMockServer;
     private GitHubClient gitHubClient;
+    private final LinkService linkService = mock(LinkService.class);
 
     @BeforeEach
     void setup() {
@@ -33,7 +36,7 @@ class GitHubClientTest {
         WireMock.configureFor("localhost", wireMockServer.port());
 
         WebClient.Builder webClientBuilder = WebClient.builder();
-        gitHubClient = new GitHubClient(webClientBuilder, wireMockServer.baseUrl(), TIMEOUT);
+        gitHubClient = new GitHubClient(linkService, webClientBuilder, wireMockServer.baseUrl(), TIMEOUT);
     }
 
     @Test

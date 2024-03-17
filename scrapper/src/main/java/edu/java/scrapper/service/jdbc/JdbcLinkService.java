@@ -7,6 +7,7 @@ import edu.java.scrapper.exception.NoSuchLinkException;
 import edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
 import edu.java.scrapper.service.LinkService;
 import java.net.URI;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,6 +31,7 @@ public class JdbcLinkService implements LinkService {
                 linkRepository.add(Link.builder()
                     .url(url)
                     .lastCheckedAt(OffsetDateTime.now())
+                    .lastUpdatedAt(OffsetDateTime.now())
                     .build()
                 )
             );
@@ -64,5 +66,15 @@ public class JdbcLinkService implements LinkService {
         return links == null
             ? Collections.emptyList()
             : links;
+    }
+
+    @Override
+    public Collection<Link> listAllOldChecked(Duration interval) {
+        return linkRepository.findAllWithShitInterval(interval);
+    }
+
+    @Override
+    public List<Long> listChatIdsByLinkId(Long linkId) {
+        return linkRepository.getChatIdsByLinkId(linkId);
     }
 }
