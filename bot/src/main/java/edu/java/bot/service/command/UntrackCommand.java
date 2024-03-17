@@ -36,10 +36,9 @@ public class UntrackCommand implements Command {
 
     @Override
     public SendMessage handle(Update update) {
-        Long userId = update.message().from().id();
         Long chatId = update.message().chat().id();
         String text = update.message().text();
-        if (chatService.getChatState(userId).equals(ChatState.AWAITING_UNTRACK_URL)) {
+        if (chatService.getChatState(chatId).equals(ChatState.AWAITING_UNTRACK_URL)) {
             try {
                 String url = linkValidator.getValidatedAndNormalizedUrl(text);
                 scrapperClient.untrackLink(chatId, new RemoveLinkRequest(URI.create(url)));
@@ -50,7 +49,7 @@ public class UntrackCommand implements Command {
                 return new SendMessage(chatId, NOT_OK);
             }
         }
-        chatService.setChatState(userId, ChatState.AWAITING_UNTRACK_URL);
+        chatService.setChatState(chatId, ChatState.AWAITING_UNTRACK_URL);
         return new SendMessage(chatId, GET_URL);
     }
 
