@@ -6,5 +6,6 @@ import java.util.Optional;
 
 public interface WebsiteClient {
     boolean canHandle(String url);
+
     Optional<LinkUpdateRequest> handle(Link link);
 }

@@ -8,6 +8,7 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -209,6 +210,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     }
 
     private ZonedDateTime toZonedDateTime(OffsetDateTime dateTime) {
-        return ZonedDateTime.parse(dateTime.toString()).withZoneSameInstant(ZoneOffset.UTC);
+        return ZonedDateTime.parse(dateTime.toString())
+            .withZoneSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.MILLIS);
     }
 }
