@@ -8,11 +8,15 @@ import edu.java.scrapper.entity.dto.QuestionResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.web.reactive.function.client.WebClient;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 class StackOverflowClientTest {
@@ -23,6 +27,12 @@ class StackOverflowClientTest {
     private WireMockServer wireMockServer;
     private StackOverflowClient stackOverflowClient;
     private final LinkService linkService = mock(LinkService.class);
+    private static final String CORRECT_URL_1 = "https://ru.stackoverflow.com/questions/965439";
+    private static final String CORRECT_URL_2 = "https://ru.stackoverflow.com/questions/965439/";
+    private static final String INCORRECT_URL_1 = "https://ru.stackoverflow.com/questions/";
+    private static final String INCORRECT_URL_2 = "https://ru.stackoverflow.com/questions/965439/smth";
+    private static final String INCORRECT_URL_3 = "https://ru.notstackoverflow.com/questions/965439";
+
 
     @BeforeEach
     void setup() {
@@ -51,6 +61,18 @@ class StackOverflowClientTest {
 
         assertEquals(1, questionResponse.items().size());
         assertEquals(QUESTION_ID, questionResponse.items().get(0).questionId());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { CORRECT_URL_1, CORRECT_URL_2 })
+    void testCanHandleCorrectLink(String link) {
+        assertTrue(stackOverflowClient.canHandle(link));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { INCORRECT_URL_1, INCORRECT_URL_2, INCORRECT_URL_3 })
+    void testCanHandleIncorrectLink(String link) {
+        assertFalse(stackOverflowClient.canHandle(link));
     }
 
     @AfterEach

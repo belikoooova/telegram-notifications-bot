@@ -16,8 +16,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 public class StackOverflowClient implements WebsiteClient {
     private static final Pattern REGEX =
-        Pattern.compile("stackoverflow\\.com/(questions/\\d+)", Pattern.CASE_INSENSITIVE);
-    private static final int QUESTION_GROUP = 1;
+        Pattern.compile(
+            "^(.*\\.stackoverflow\\.com/|.*/stackoverflow\\.com/|stackoverflow\\.com/)(questions/\\d+)/?$",
+            Pattern.CASE_INSENSITIVE
+        );
+    private static final int QUESTION_GROUP = 2;
     private static final String ACTIVITY_RESPONSE = "There was activity on the page with the question...";
     private static final String EDIT_RESPONSE = "The question has been edited...";
 

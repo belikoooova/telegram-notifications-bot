@@ -8,6 +8,8 @@ import edu.java.scrapper.entity.dto.RepositoryResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.OffsetDateTime;
@@ -16,6 +18,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 class GitHubClientTest {
@@ -24,6 +28,11 @@ class GitHubClientTest {
     private static final String TITLE = "tinkoff-course";
     private static final int HTTP_OK = 200;
     private static final OffsetDateTime DATE_TIME = OffsetDateTime.parse("2021-02-20T14:30:00Z");
+    private static final String CORRECT_URL_GH_1 = "https://github.com/belikoooova/map-kit-app";
+    private static final String CORRECT_URL_GH_2 = "https://github.com/belikoooova/map-kit-app/";
+    private static final String INCORRECT_URL_GH_1 = "https://github.com/belikoooova/";
+    private static final String INCORRECT_URL_GH_2 = "https://github.com/belikoooova/non-existing-repo/sed";
+    private static final String INCORRECT_URL_GH_3 = "https://notgithub.com/belikoooova/hello";
 
     private WireMockServer wireMockServer;
     private GitHubClient gitHubClient;
@@ -61,6 +70,18 @@ class GitHubClientTest {
         assertEquals(LOGIN, response.owner().login());
         assertEquals(TITLE, response.name());
         assertEquals(DATE_TIME, response.createdAt());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { CORRECT_URL_GH_1, CORRECT_URL_GH_2 })
+    void testCanHandleCorrectLink(String link) {
+        assertTrue(gitHubClient.canHandle(link));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { INCORRECT_URL_GH_1, INCORRECT_URL_GH_2, INCORRECT_URL_GH_3 })
+    void testCanHandleIncorrectLink(String link) {
+        assertFalse(gitHubClient.canHandle(link));
     }
 
     @AfterEach

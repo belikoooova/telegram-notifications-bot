@@ -13,9 +13,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 public class GitHubClient implements WebsiteClient {
     private static final Pattern REGEX =
-        Pattern.compile("github\\.com/([A-Z0-9_-]+)/([A-Z0-9_-]+)/?", Pattern.CASE_INSENSITIVE);
-    private static final int OWNER_GROUP = 1;
-    private static final int REPO_GROUP = 2;
+        Pattern.compile(
+            "^(.*\\.github\\.com/|.*/github\\.com/|github\\.com/)([A-Z0-9_-]+)/([A-Z0-9_-]+)/?$",
+            Pattern.CASE_INSENSITIVE
+        );
+    private static final int OWNER_GROUP = 2;
+    private static final int REPO_GROUP = 3;
     private static final String UPDATE_RESPONSE = "There have been some updates in the repository...";
 
     private final LinkService linkService;
