@@ -62,9 +62,7 @@ public class JdbcLinkService implements LinkService {
     @Override
     public Collection<Link> listAll(long tgChatId) {
         List<Link> links = linkRepository.findAllLinksByChatId(tgChatId);
-        return links == null
-            ? Collections.emptyList()
-            : links;
+        return links == null ? Collections.emptyList() : links;
     }
 
     @Override
