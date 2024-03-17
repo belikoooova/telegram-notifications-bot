@@ -51,9 +51,9 @@ public class StackOverflowClient implements WebsiteClient {
         }
         QuestionResponse response = fetchQuestion(Long.getLong(matcher.group(QUESTION_GROUP)));
         String answer;
-        if (timeBeforeAnother(response.items().getFirst().lastEditDateSeconds(), link.getLastUpdatedAt())) {
+        if (timeBeforeAnother(response.items().getFirst().lastEditDateSeconds(), link.getLastCheckedAt())) {
             answer = EDIT_RESPONSE;
-        } else if (timeBeforeAnother(response.items().getFirst().lastActivityDateSeconds(), link.getLastUpdatedAt())) {
+        } else if (timeBeforeAnother(response.items().getFirst().lastActivityDateSeconds(), link.getLastCheckedAt())) {
             answer = ACTIVITY_RESPONSE;
         } else {
             return Optional.empty();

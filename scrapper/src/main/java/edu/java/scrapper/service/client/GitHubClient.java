@@ -47,7 +47,7 @@ public class GitHubClient implements WebsiteClient {
             throw new InvalidLinkException();
         }
         RepositoryResponse response = fetchRepository(matcher.group(OWNER_GROUP), matcher.group(REPO_GROUP));
-        if (response.updatedAt().isAfter(link.getLastUpdatedAt())) {
+        if (response.updatedAt().isAfter(link.getLastCheckedAt())) {
             return Optional.of(
                 LinkUpdateRequest.builder()
                     .id(link.getId())

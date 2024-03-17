@@ -6,6 +6,7 @@ import edu.java.scrapper.exception.UnsupportedResourceException;
 import edu.java.scrapper.service.LinkService;
 import edu.java.scrapper.service.client.BotClient;
 import edu.java.scrapper.service.client.WebsiteClient;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +33,12 @@ public class LinkUpdater {
                     if (client.canHandle(l.getUrl().toString())) {
                         isHandled = true;
                         Optional<LinkUpdateRequest> optionalRequest = client.handle(l);
+                        linkService.updateLastCheckedTime(l, OffsetDateTime.now());
                         if (optionalRequest.isEmpty()) {
                             continue;
                         }
                         botClient.sendUpdate(optionalRequest.get());
+                        break;
                     }
                 }
                 if (!isHandled) {

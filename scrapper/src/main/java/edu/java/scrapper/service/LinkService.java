@@ -3,6 +3,7 @@ package edu.java.scrapper.service;
 import edu.java.scrapper.entity.Link;
 import java.net.URI;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface LinkService {
     Collection<Link> listAllOldChecked(Duration interval);
 
     List<Long> listChatIdsByLinkId(Long linkId);
+
+    void updateLastCheckedTime(Link link, OffsetDateTime dateTime);
 }

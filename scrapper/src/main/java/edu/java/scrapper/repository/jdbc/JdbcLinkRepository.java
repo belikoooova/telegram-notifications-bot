@@ -18,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 public class JdbcLinkRepository {
-    private static final String ADD_QUERY = "insert into link (url, last_checked_at, last_updated_at) "
-        + "values (?, ?, ?) returning *";
+    private static final String ADD_QUERY = "insert into link (url, last_checked_at) "
+        + "values (?, ?) returning *";
     private static final String DELETE_QUERY = "delete from link where id=? returning *";
     private static final String FIND_ALL_QUERY = "select * from link";
     private static final String FIND_ALL_LINKS_BY_CHAT_ID = "select * from link l "
@@ -31,6 +31,7 @@ public class JdbcLinkRepository {
     private static final String DISCONNECT_LINK_FROM_CHAT = "delete from chat_link where link_id=? and chat_id=?";
     private static final String FIND_BY_URL = "select * from link where url=?";
     private static final String FIND_CHAT_IDS_BY_LINK_ID = "select cl.chat_id from chat_link cl where cl.link_id=?";
+    private static final String UPDATE_LAST_CHECKED_TIME = "update link set last_checked_at=? where id=?";
     private static final RowMapper<Link> MAPPER = new BeanPropertyRowMapper<>(Link.class);
 
     private final JdbcTemplate jdbcTemplate;
@@ -41,8 +42,7 @@ public class JdbcLinkRepository {
             ADD_QUERY,
             MAPPER,
             link.getUrl().toString(),
-            link.getLastCheckedAt(),
-            link.getLastUpdatedAt()
+            link.getLastCheckedAt()
         );
     }
 
@@ -122,6 +122,15 @@ public class JdbcLinkRepository {
             FIND_CHAT_IDS_BY_LINK_ID,
             (rs, rowNum) -> rs.getLong("chat_id"),
             linkId
+        );
+    }
+
+    @Transactional
+    public void updateLastCheckedTime(Link link, OffsetDateTime dateTime) {
+        jdbcTemplate.update(
+            UPDATE_LAST_CHECKED_TIME,
+            dateTime,
+            link.getId()
         );
     }
 }

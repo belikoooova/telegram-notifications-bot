@@ -31,7 +31,6 @@ public class JdbcLinkService implements LinkService {
                 linkRepository.add(Link.builder()
                     .url(url)
                     .lastCheckedAt(OffsetDateTime.now())
-                    .lastUpdatedAt(OffsetDateTime.now())
                     .build()
                 )
             );
@@ -76,5 +75,10 @@ public class JdbcLinkService implements LinkService {
     @Override
     public List<Long> listChatIdsByLinkId(Long linkId) {
         return linkRepository.getChatIdsByLinkId(linkId);
+    }
+
+    @Override
+    public void updateLastCheckedTime(Link link, OffsetDateTime dateTime) {
+        linkRepository.updateLastCheckedTime(link, dateTime);
     }
 }

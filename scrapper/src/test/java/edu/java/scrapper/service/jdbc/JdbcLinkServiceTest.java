@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -26,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -48,7 +48,6 @@ class JdbcLinkServiceTest {
         link.setId(ID);
         link.setUrl(URL);
         link.setLastCheckedAt(OffsetDateTime.now());
-        link.setLastUpdatedAt(OffsetDateTime.now());
     }
 
     @Test
@@ -108,7 +107,6 @@ class JdbcLinkServiceTest {
     }
 
     @Test
-    @DisplayName("listAll should return empty list if no links found")
     void listAllShouldReturnEmptyIfNoLinks() {
         when(linkRepository.findAllLinksByChatId(ID)).thenReturn(Collections.emptyList());
 
@@ -141,5 +139,15 @@ class JdbcLinkServiceTest {
 
         verify(linkRepository).findAllWithShitInterval(interval);
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void updateLastCheckedTimeShouldShouldCallRepoMethod() {
+        OffsetDateTime newDateTime = OffsetDateTime.now().minusHours(1);
+        doNothing().when(linkRepository).updateLastCheckedTime(link, newDateTime);
+
+        jdbcLinkService.updateLastCheckedTime(link, newDateTime);
+
+        verify(linkRepository).updateLastCheckedTime(link, newDateTime);
     }
 }

@@ -4,13 +4,6 @@ import edu.java.scrapper.entity.Chat;
 import edu.java.scrapper.entity.Link;
 import edu.java.scrapper.repository.jdbc.JdbcChatRepository;
 import edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -18,8 +11,16 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class JdbcLinkRepositoryTest extends IntegrationEnvironment {
@@ -45,7 +46,6 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
-            .lastUpdatedAt(DATE)
             .build();
 
         Link inserted = linkRepository.add(link);
@@ -53,7 +53,6 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         assertNotNull(inserted.getId());
         assertEquals(link.getUrl(), inserted.getUrl());
         assertEquals(toZonedDateTime(link.getLastCheckedAt()), toZonedDateTime(inserted.getLastCheckedAt()));
-        assertEquals(toZonedDateTime(link.getLastUpdatedAt()), toZonedDateTime(inserted.getLastUpdatedAt()));
     }
 
     @Test
@@ -63,12 +62,10 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
-            .lastUpdatedAt(DATE)
             .build();
         Link link2 = Link.builder()
             .url(EXAMPLE_URI_2)
             .lastCheckedAt(DATE)
-            .lastUpdatedAt(DATE)
             .build();
         linkRepository.add(link1);
         linkRepository.add(link2);
@@ -85,7 +82,6 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
-            .lastUpdatedAt(DATE)
             .build();
         Link inserted = linkRepository.add(link);
 
@@ -103,7 +99,6 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
-            .lastUpdatedAt(DATE)
             .build();
         Link inserted = linkRepository.add(link);
         linkRepository.remove(inserted);
@@ -121,12 +116,10 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
-            .lastUpdatedAt(DATE)
             .build();
         Link link2 = Link.builder()
             .url(EXAMPLE_URI_2)
             .lastCheckedAt(DATE)
-            .lastUpdatedAt(DATE)
             .build();
         Link insertedLink1 = linkRepository.add(link1);
         Link insertedLink2 = linkRepository.add(link2);
@@ -146,12 +139,10 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
-            .lastUpdatedAt(DATE)
             .build();
         Link link2 = Link.builder()
             .url(EXAMPLE_URI_2)
             .lastCheckedAt(DATE)
-            .lastUpdatedAt(DATE)
             .build();
         Link insertedLink1 = linkRepository.add(link1);
         Link insertedLink2 = linkRepository.add(link2);
@@ -172,12 +163,10 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
-            .lastUpdatedAt(DATE)
             .build();
         Link link2 = Link.builder()
             .url(EXAMPLE_URI_2)
             .lastCheckedAt(DATE)
-            .lastUpdatedAt(DATE)
             .build();
         Link insertedLink1 = linkRepository.add(link1);
         Link insertedLink2 = linkRepository.add(link2);
@@ -198,7 +187,6 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
-            .lastUpdatedAt(DATE)
             .build();
         Link insertedLink1 = linkRepository.add(link1);
 
@@ -216,7 +204,6 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
-            .lastUpdatedAt(DATE)
             .build();
         Link insertedLink1 = linkRepository.add(link1);
         Chat chat1 = new Chat(EXAMPLE_ID_1);
@@ -229,6 +216,25 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         List<Long> addedChatIds = linkRepository.getChatIdsByLinkId(insertedLink1.getId());
 
         assertEquals(ADDED_CHATS_AMOUNT, addedChatIds.size());
+    }
+
+    @Test
+    @Transactional
+    void testUpdateLastCheckedTime() {
+        Link link1 = Link.builder()
+            .url(EXAMPLE_URI_1)
+            .lastCheckedAt(DATE)
+            .build();
+        Link insertedLink1 = linkRepository.add(link1);
+        OffsetDateTime newDate = DATE.plusHours(1);
+
+        linkRepository.updateLastCheckedTime(insertedLink1, newDate);
+
+        assertEquals(
+            toZonedDateTime(newDate),
+            toZonedDateTime(linkRepository.findLinkByUrl(insertedLink1.getUrl()).get()
+                .getLastCheckedAt())
+        );
     }
 
     private ZonedDateTime toZonedDateTime(OffsetDateTime dateTime) {
