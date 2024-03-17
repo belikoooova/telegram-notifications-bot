@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum TrackingResource {
     GITHUB(Pattern.compile(
-            "^(.*\\.github\\.com/|.*/github\\.com/|github\\.com/)([A-Z0-9_-]+)/([A-Z0-9_-]+)/?$",
+            "^(.*\\.github\\.com/|.*/github\\.com/|github\\.com/)(([A-Z0-9_-]+)/([A-Z0-9_-]+))/?$",
         Pattern.CASE_INSENSITIVE
         )),
     STACKOVERFLOW(Pattern.compile(
@@ -35,7 +35,7 @@ public enum TrackingResource {
 
     public int pathOnResourceGroupNumber() {
         return switch (this) {
-            case GITHUB, STACKOVERFLOW -> 1;
+            case GITHUB, STACKOVERFLOW -> 2;
         };
     }
 }
