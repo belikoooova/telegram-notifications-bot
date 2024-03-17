@@ -18,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 public class JdbcLinkRepository {
-    private static final String ADD_QUERY = "insert into link (url, last_checked_at, last_updated_at) " +
-        "values (?, ?, ?) returning *";
+    private static final String ADD_QUERY = "insert into link (url, last_checked_at, last_updated_at) "
+        + "values (?, ?, ?) returning *";
     private static final String DELETE_QUERY = "delete from link where id=? returning *";
     private static final String FIND_ALL_QUERY = "select * from link";
     private static final String FIND_ALL_LINKS_BY_CHAT_ID = "select * from link l "
