@@ -2,24 +2,20 @@ package edu.java.scrapper.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import edu.java.scrapper.entity.dto.RepositoryResponse;
 import edu.java.scrapper.service.LinkService;
 import edu.java.scrapper.service.client.GitHubClient;
-import edu.java.scrapper.entity.dto.RepositoryResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.web.reactive.function.client.WebClient;
-
 import java.time.OffsetDateTime;
-
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class GitHubClientTest {
@@ -73,13 +69,13 @@ class GitHubClientTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { CORRECT_URL_GH_1, CORRECT_URL_GH_2 })
+    @ValueSource(strings = {CORRECT_URL_GH_1, CORRECT_URL_GH_2})
     void testCanHandleCorrectLink(String link) {
         assertTrue(gitHubClient.canHandle(link));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { INCORRECT_URL_GH_1, INCORRECT_URL_GH_2, INCORRECT_URL_GH_3 })
+    @ValueSource(strings = {INCORRECT_URL_GH_1, INCORRECT_URL_GH_2, INCORRECT_URL_GH_3})
     void testCanHandleIncorrectLink(String link) {
         assertFalse(gitHubClient.canHandle(link));
     }

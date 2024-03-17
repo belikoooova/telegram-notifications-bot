@@ -4,6 +4,13 @@ import edu.java.scrapper.entity.Chat;
 import edu.java.scrapper.entity.Link;
 import edu.java.scrapper.repository.jdbc.JdbcChatRepository;
 import edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -11,16 +18,8 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class JdbcLinkRepositoryTest extends IntegrationEnvironment {
@@ -28,7 +27,9 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     private static final URI EXAMPLE_URI_2 = URI.create("http://example2.com");
     private static final OffsetDateTime DATE = OffsetDateTime.now();
     private static final int ADDED_LINKS_AMOUNT = 2;
+    private static final int ADDED_CHATS_AMOUNT = 2;
     private static final long EXAMPLE_ID_1 = 1;
+    private static final long EXAMPLE_ID_2 = 2;
 
     @Autowired
     private JdbcLinkRepository linkRepository;
@@ -207,6 +208,27 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         assertTrue(optionalLink1.isPresent());
         assertEquals(optionalLink1.get().getId(), insertedLink1.getId());
         assertTrue(optionalLink2.isEmpty());
+    }
+
+    @Test
+    @Transactional
+    void testGetChatIdsByLinkId() {
+        Link link1 = Link.builder()
+            .url(EXAMPLE_URI_1)
+            .lastCheckedAt(DATE)
+            .lastUpdatedAt(DATE)
+            .build();
+        Link insertedLink1 = linkRepository.add(link1);
+        Chat chat1 = new Chat(EXAMPLE_ID_1);
+        chatRepository.add(chat1);
+        Chat chat2 = new Chat(EXAMPLE_ID_2);
+        chatRepository.add(chat2);
+        linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
+        linkRepository.connectLinkToChat(EXAMPLE_ID_2, insertedLink1.getId());
+
+        List<Long> addedChatIds = linkRepository.getChatIdsByLinkId(insertedLink1.getId());
+
+        assertEquals(ADDED_CHATS_AMOUNT, addedChatIds.size());
     }
 
     private ZonedDateTime toZonedDateTime(OffsetDateTime dateTime) {

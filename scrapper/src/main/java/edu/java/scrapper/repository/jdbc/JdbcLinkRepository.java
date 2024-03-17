@@ -2,11 +2,6 @@ package edu.java.scrapper.repository.jdbc;
 
 import edu.java.scrapper.entity.Link;
 import edu.java.scrapper.exception.LinkNotTrackedException;
-import java.net.URI;
-import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -14,6 +9,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.net.URI;
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -120,7 +121,7 @@ public class JdbcLinkRepository {
     public List<Long> getChatIdsByLinkId(Long linkId) {
         return jdbcTemplate.query(
             FIND_CHAT_IDS_BY_LINK_ID,
-            new BeanPropertyRowMapper<>(Long.class),
+            (rs, rowNum) -> rs.getLong("chat_id"),
             linkId
         );
     }
