@@ -19,7 +19,7 @@ public class UntrackCommand implements Command {
     private static final String GET_URL = "Enter the link you want to stop tracking.";
     private static final String OK = "The link was successfully deleted.";
     private static final String NOT_OK = "Sorry, your link is incorrect. Please choose any command to continue.";
-    // private final ChatRepository chatRepository;
+
     private final ChatService chatService;
     private final LinkValidator linkValidator;
     private final ScrapperClient scrapperClient;

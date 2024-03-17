@@ -14,7 +14,6 @@ public class StartCommand implements Command {
     private static final String DESCRIPTION = "register user";
     private static final String ANSWER = "Hello! This bot will help you track updates on the resources you need "
         + "(currently supports StackOverflow and GitHub). Type /help to see the list of commands.";
-    // private final ChatRepository chatRepository;
     private final ChatService chatService;
     private final ScrapperClient scrapperClient;
 

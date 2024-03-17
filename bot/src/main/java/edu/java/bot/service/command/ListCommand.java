@@ -19,7 +19,6 @@ public class ListCommand implements Command {
     private static final String THERE_ARE_NO_LINKS = "Sorry, the list of tracked links is empty.";
     private static final String COMMANDS_SEPARATOR = "\n- ";
     private final ChatService chatService;
-    // private final ChatRepository chatRepository;
     private final ScrapperClient scrapperClient;
 
     @Override

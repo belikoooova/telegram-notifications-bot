@@ -18,7 +18,7 @@ public class HelpCommand implements Command {
     private static final String LINES_SEPARATOR = ";\n";
 
     private final List<Command> commands;
-    // private final ChatRepository chatRepository;
+
     private final ChatService chatService;
 
     @Override
