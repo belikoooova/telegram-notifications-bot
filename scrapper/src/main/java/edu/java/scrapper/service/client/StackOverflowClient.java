@@ -1,6 +1,7 @@
 package edu.java.scrapper.service.client;
 
 import edu.java.scrapper.entity.Link;
+import edu.java.scrapper.entity.dto.LastAnswerResponse;
 import edu.java.scrapper.entity.dto.LinkUpdateRequest;
 import edu.java.scrapper.entity.dto.QuestionResponse;
 import edu.java.scrapper.exception.InvalidLinkException;
@@ -9,6 +10,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,6 +26,7 @@ public class StackOverflowClient implements WebsiteClient {
     private static final int QUESTION_GROUP = 2;
     private static final String ACTIVITY_RESPONSE = "There was activity on the page with the question...";
     private static final String EDIT_RESPONSE = "The question has been edited...";
+    private static final String NEW_ANSWER = "There is a new answer to the question...";
 
     private final LinkService linkService;
     private final int timeout;
@@ -44,12 +48,30 @@ public class StackOverflowClient implements WebsiteClient {
     }
 
     @Override
-    public Optional<LinkUpdateRequest> handle(Link link) {
+    public List<LinkUpdateRequest> handle(Link link) {
         Matcher matcher = REGEX.matcher(link.getUrl().toString());
         if (!matcher.find()) {
             throw new InvalidLinkException();
         }
-        QuestionResponse response = fetchQuestion(Long.getLong(matcher.group(QUESTION_GROUP)));
+        Long questionId = Long.getLong(matcher.group(matcher.group(QUESTION_GROUP)));
+        List<Long> chatIds = linkService.listChatIdsByLinkId(link.getId());
+        List<LinkUpdateRequest> linkUpdateRequests = new ArrayList<>();
+
+        getQuestionLinkUpdateRequest(link, questionId)
+            .ifPresent(request -> {
+                request.setTgChatIds(chatIds);
+                linkUpdateRequests.add(request);
+            });
+        getAnswerLinkUpdateRequest(link, questionId)
+            .ifPresent(request -> {
+                request.setTgChatIds(chatIds);
+                linkUpdateRequests.add(request);
+            });
+        return linkUpdateRequests;
+    }
+
+    public Optional<LinkUpdateRequest> getQuestionLinkUpdateRequest(Link link, Long questionId) {
+        QuestionResponse response = fetchQuestion(questionId);
         String answer;
         if (timeBeforeAnother(response.items().getFirst().lastEditDateSeconds(), link.getLastCheckedAt())) {
             answer = EDIT_RESPONSE;
@@ -63,7 +85,6 @@ public class StackOverflowClient implements WebsiteClient {
                 .id(link.getId())
                 .url(link.getUrl())
                 .description(answer)
-                .tgChatIds(linkService.listChatIdsByLinkId(link.getId()))
                 .build()
         );
     }
@@ -76,8 +97,33 @@ public class StackOverflowClient implements WebsiteClient {
             .block(Duration.ofSeconds(timeout));
     }
 
+    public Optional<LinkUpdateRequest> getAnswerLinkUpdateRequest(Link link, Long questionId) {
+        LastAnswerResponse response = fetchLastAnswer(questionId);
+        if (response == null
+            || response.items().isEmpty()
+            || timeBeforeAnother(response.items().getFirst().creationDateSeconds(), link.getLastCheckedAt())
+        ) {
+            return Optional.empty();
+        }
+        return Optional.of(
+            LinkUpdateRequest.builder()
+                .id(link.getId())
+                .url(link.getUrl())
+                .description(NEW_ANSWER)
+                .build()
+        );
+    }
+
+    public LastAnswerResponse fetchLastAnswer(Long questionId) {
+        return webClient.get()
+            .uri("/questions/{questionId}/answers?order=desc&sort=activity&site=stackoverflow", questionId)
+            .retrieve()
+            .bodyToMono(LastAnswerResponse.class)
+            .block(Duration.ofSeconds(timeout));
+    }
+
     private boolean timeBeforeAnother(Long seconds, OffsetDateTime offsetDateTime) {
         return Instant.ofEpochSecond(seconds).atOffset(ZoneOffset.UTC)
-            .isBefore(offsetDateTime.withOffsetSameInstant(ZoneOffset.UTC));
+            .isAfter(offsetDateTime.withOffsetSameInstant(ZoneOffset.UTC));
     }
 }

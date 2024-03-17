@@ -2,20 +2,24 @@ package edu.java.scrapper.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import edu.java.scrapper.entity.dto.LastCommitResponse;
 import edu.java.scrapper.entity.dto.RepositoryResponse;
 import edu.java.scrapper.service.LinkService;
 import edu.java.scrapper.service.client.GitHubClient;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.web.reactive.function.client.WebClient;
-import java.time.OffsetDateTime;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 class GitHubClientTest {
@@ -55,7 +59,7 @@ class GitHubClientTest {
               "pushed_at": "2021-02-22T14:30:00Z"
             }""";
 
-        wireMockServer.stubFor(get(WireMock.urlEqualTo("/repos/belikoooova/tinkoff-course"))
+        wireMockServer.stubFor(get(urlEqualTo("/repos/belikoooova/tinkoff-course"))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
                 .withBody(jsonResponse)
@@ -78,6 +82,39 @@ class GitHubClientTest {
     @ValueSource(strings = {INCORRECT_URL_GH_1, INCORRECT_URL_GH_2, INCORRECT_URL_GH_3})
     void testCanHandleIncorrectLink(String link) {
         assertFalse(gitHubClient.canHandle(link));
+    }
+
+    @Test
+    void fetchLastCommitShouldReturnLastCommitDetails() {
+        String lastCommitJsonResponse = """
+            [{
+              "commit": {
+                "author": {
+                  "name": "Maria Belikova",
+                  "date": "2024-01-02T00:00:00Z"
+                }
+              }
+            },
+            {
+              "commit": {
+                "author": {
+                  "name": "Maria Belikova",
+                  "date": "2024-01-01T00:00:00Z"
+                }
+              }
+            }]
+            """;
+
+        wireMockServer.stubFor(get(urlEqualTo("/repos/belikoooova/testRepo/commits"))
+            .willReturn(aResponse()
+                .withHeader("Content-Type", "application/json")
+                .withBody(lastCommitJsonResponse)
+                .withStatus(HTTP_OK)));
+
+        LastCommitResponse lastCommitResponse = gitHubClient.fetchLastCommit("belikoooova", "testRepo");
+
+        assertEquals("Maria Belikova", lastCommitResponse.commit().author().name());
+        assertEquals(OffsetDateTime.parse("2024-01-02T00:00:00Z"), lastCommitResponse.commit().author().date());
     }
 
     @AfterEach
