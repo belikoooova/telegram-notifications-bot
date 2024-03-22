@@ -28,7 +28,7 @@ public class JdbcChatRepository {
             ADD_QUERY,
             mapper,
             chat.getId(),
-            chat.getState().name()
+            ChatState.NONE.name()
         );
     }
 

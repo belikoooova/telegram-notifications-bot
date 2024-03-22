@@ -2,9 +2,9 @@ app:
   link-updater-scheduler:
     interval: 60s
   base-url:
-    git-hub: "https://api.github.com"
-    bot: ${BOT_BASE_URL:"http://localhost:8080"}
-    stack-overflow: "https://api.stackexchange.com/2.3"
+    git-hub: https://api.github.com
+    bot: ${BOT_BASE_URL:http://localhost:8090}
+    stack-overflow: https://api.stackexchange.com/2.3
   timeout:
     minutes: 5
 
