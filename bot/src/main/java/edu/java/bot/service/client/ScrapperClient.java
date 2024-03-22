@@ -43,7 +43,7 @@ public class ScrapperClient {
                 status -> status.is4xxClientError() || status.is5xxServerError(),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ApiErrorResponseException::new)
             ).bodyToMono(String.class)
-            .block(Duration.ofSeconds(timeoutInMinutes));
+            .block(Duration.ofMinutes(timeoutInMinutes));
     }
 
     public ListLinkResponse getLinks(Long chatId) {
@@ -54,7 +54,7 @@ public class ScrapperClient {
                 status -> status.is4xxClientError() || status.is5xxServerError(),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ApiErrorResponseException::new)
             ).bodyToMono(ListLinkResponse.class)
-            .block(Duration.ofSeconds(timeoutInMinutes));
+            .block(Duration.ofMinutes(timeoutInMinutes));
     }
 
     public String trackLink(Long chatId, AddLinkRequest request) {
@@ -66,7 +66,7 @@ public class ScrapperClient {
                 status -> status.is4xxClientError() || status.is5xxServerError(),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ApiErrorResponseException::new)
             ).bodyToMono(String.class)
-            .block(Duration.ofSeconds(timeoutInMinutes));
+            .block(Duration.ofMinutes(timeoutInMinutes));
     }
 
     public String untrackLink(Long chatId, RemoveLinkRequest request) {
@@ -78,6 +78,6 @@ public class ScrapperClient {
                 status -> status.is4xxClientError() || status.is5xxServerError(),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ApiErrorResponseException::new)
             ).bodyToMono(String.class)
-            .block(Duration.ofSeconds(timeoutInMinutes));
+            .block(Duration.ofMinutes(timeoutInMinutes));
     }
 }

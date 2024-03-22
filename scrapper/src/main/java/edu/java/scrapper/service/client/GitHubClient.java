@@ -104,7 +104,7 @@ public class GitHubClient implements WebsiteClient {
             .uri("/repos/{owner}/{name}", owner, repo)
             .retrieve()
             .bodyToMono(RepositoryResponse.class)
-            .block(Duration.ofSeconds(timeoutInMinutes));
+            .block(Duration.ofMinutes(timeoutInMinutes));
     }
 
     public LastCommitResponse fetchLastCommit(String owner, String repo) {
@@ -113,6 +113,6 @@ public class GitHubClient implements WebsiteClient {
             .retrieve()
             .bodyToFlux(LastCommitResponse.class)
             .next()
-            .block(Duration.ofSeconds(timeoutInMinutes));
+            .block(Duration.ofMinutes(timeoutInMinutes));
     }
 }

@@ -94,7 +94,7 @@ public class StackOverflowClient implements WebsiteClient {
             .uri("/questions/{questionId}?order=desc&sort=activity&site=stackoverflow", questionId)
             .retrieve()
             .bodyToMono(QuestionResponse.class)
-            .block(Duration.ofSeconds(timeout));
+            .block(Duration.ofMinutes(timeout));
     }
 
     public Optional<LinkUpdateRequest> getAnswerLinkUpdateRequest(Link link, Long questionId) {
@@ -119,7 +119,7 @@ public class StackOverflowClient implements WebsiteClient {
             .uri("/questions/{questionId}/answers?order=desc&sort=activity&site=stackoverflow", questionId)
             .retrieve()
             .bodyToMono(LastAnswerResponse.class)
-            .block(Duration.ofSeconds(timeout));
+            .block(Duration.ofMinutes(timeout));
     }
 
     private boolean timeBeforeAnother(Long seconds, OffsetDateTime offsetDateTime) {

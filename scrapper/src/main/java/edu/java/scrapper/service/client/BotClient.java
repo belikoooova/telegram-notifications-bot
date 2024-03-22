@@ -28,6 +28,6 @@ public class BotClient {
                 status -> status.is4xxClientError() || status.is5xxServerError(),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ApiErrorResponseException::new)
             ).bodyToMono(String.class)
-            .block(Duration.ofSeconds(timeoutInMinutes));
+            .block(Duration.ofMinutes(timeoutInMinutes));
     }
 }
