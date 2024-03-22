@@ -1,0 +1,66 @@
+services:
+  bot-liquibase-migrations:
+    image: liquibase/liquibase:4.25
+    depends_on:
+      - bot-postgresql
+    volumes:
+      - ./bot/src/main/resources/migrations:/liquibase/changelog
+    command:
+      - --changelog-file=master.xml
+      - --driver=org.postgresql.Driver
+      - --url=jdbc:postgresql://bot-postgresql:5432/bot
+      - --username=postgres
+      - --password=postgres
+      - update
+    networks:
+      - backend
+
+  bot-postgresql:
+    image: postgres:16
+    ports:
+      - "54321:5432"
+    environment:
+      POSTGRES_DB: bot
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - bot-postgresql:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  scrapper-liquibase-migrations:
+    image: liquibase/liquibase:4.25
+    depends_on:
+      - scrapper-postgresql
+    volumes:
+      - ./scrapper/src/main/resources/migrations:/liquibase/changelog
+    command:
+      - --changelog-file=master.xml
+      - --driver=org.postgresql.Driver
+      - --url=jdbc:postgresql://scrapper-postgresql:5432/scrapper
+      - --username=postgres
+      - --password=postgres
+      - update
+    networks:
+      - backend
+
+  scrapper-postgresql:
+    image: postgres:16
+    ports:
+      - "54322:5432"
+    environment:
+      POSTGRES_DB: scrapper
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - scrapper-postgresql:/var/lib/postgresql/data
+    networks:
+      - backend
+
+volumes:
+  bot-postgresql:
+  scrapper-postgresql:
+
+
+networks:
+  backend: { }
