@@ -4,7 +4,7 @@ app:
     scrapper: ${SCRAPPER_BASE_URL:http://localhost:8080}
   timeout:
     minutes: 5
-  database-access-type: jpa
+  database-access-type: jdbc
 
 spring:
   application:

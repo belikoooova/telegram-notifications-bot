@@ -7,29 +7,24 @@ import edu.java.scrapper.exception.LinkNotTrackedException;
 import edu.java.scrapper.exception.NoSuchLinkException;
 import edu.java.scrapper.repository.jpa.JpaChatRepository;
 import edu.java.scrapper.repository.jpa.JpaLinkRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -161,10 +156,10 @@ class JpaLinkServiceTest {
     @Test
     void updateLastCheckedTimeShouldCallRepoMethod() {
         OffsetDateTime newDateTime = OffsetDateTime.now().minusHours(1);
-        doNothing().when(linkRepository).updateLastCheckedTime(anyLong(), any(OffsetDateTime.class));
+        doNothing().when(linkRepository).updateLastCheckedTime(link.getId(), newDateTime);
 
         jpaLinkService.updateLastCheckedTime(link, newDateTime);
 
-        verify(linkRepository).updateLastCheckedTime(anyLong(), any(OffsetDateTime.class));
+        verify(linkRepository).updateLastCheckedTime(link.getId(), newDateTime);
     }
 }
