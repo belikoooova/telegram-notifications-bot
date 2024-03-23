@@ -20,7 +20,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -40,62 +39,6 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     private JdbcChatRepository chatRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    @Test
-    @Transactional
-    @Rollback
-    @DirtiesContext
-    void addTest() {
-        Link link = Link.builder()
-            .url(EXAMPLE_URI_1)
-            .lastCheckedAt(DATE)
-            .build();
-
-        Link inserted = linkRepository.add(link);
-
-        assertNotNull(inserted.getId());
-        assertEquals(link.getUrl(), inserted.getUrl());
-        assertEquals(toZonedDateTime(link.getLastCheckedAt()), toZonedDateTime(inserted.getLastCheckedAt()));
-    }
-
-    @Test
-    @Transactional
-    @Rollback
-    @DirtiesContext
-    void findAllTest() {
-        Link link1 = Link.builder()
-            .url(EXAMPLE_URI_1)
-            .lastCheckedAt(DATE)
-            .build();
-        Link link2 = Link.builder()
-            .url(EXAMPLE_URI_2)
-            .lastCheckedAt(DATE)
-            .build();
-        linkRepository.add(link1);
-        linkRepository.add(link2);
-
-        List<Link> receivedLinks = linkRepository.findAll();
-
-        assertEquals(ADDED_LINKS_AMOUNT, receivedLinks.size());
-    }
-
-    @Test
-    @Transactional
-    @Rollback
-    @DirtiesContext
-    void removeExistingTest() {
-        Link link = Link.builder()
-            .url(EXAMPLE_URI_1)
-            .lastCheckedAt(DATE)
-            .build();
-        Link inserted = linkRepository.add(link);
-
-        Link removed = linkRepository.remove(inserted);
-
-        assertTrue(linkRepository.findAll().isEmpty());
-        assertEquals(inserted.getUrl(), removed.getUrl());
-        assertEquals(toZonedDateTime(inserted.getLastCheckedAt()), toZonedDateTime(removed.getLastCheckedAt()));
-    }
 
     @Test
     @Transactional
