@@ -16,10 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -43,7 +43,59 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
-    @DirtiesContext
+    void addTest() {
+        Link link = Link.builder()
+            .url(EXAMPLE_URI_1)
+            .lastCheckedAt(DATE)
+            .build();
+
+        Link inserted = linkRepository.add(link);
+
+        assertNotNull(inserted.getId());
+        assertEquals(link.getUrl(), inserted.getUrl());
+        assertEquals(toZonedDateTime(link.getLastCheckedAt()), toZonedDateTime(inserted.getLastCheckedAt()));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void findAllTest() {
+        Link link1 = Link.builder()
+            .url(EXAMPLE_URI_1)
+            .lastCheckedAt(DATE)
+            .build();
+        Link link2 = Link.builder()
+            .url(EXAMPLE_URI_2)
+            .lastCheckedAt(DATE)
+            .build();
+        linkRepository.add(link1);
+        linkRepository.add(link2);
+
+        List<Link> receivedLinks = linkRepository.findAll();
+
+        assertEquals(ADDED_LINKS_AMOUNT, receivedLinks.size());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void removeExistingTest() {
+        Link link = Link.builder()
+            .url(EXAMPLE_URI_1)
+            .lastCheckedAt(DATE)
+            .build();
+        Link inserted = linkRepository.add(link);
+
+        Link removed = linkRepository.remove(inserted);
+
+        assertTrue(linkRepository.findAll().isEmpty());
+        assertEquals(inserted.getUrl(), removed.getUrl());
+        assertEquals(toZonedDateTime(inserted.getLastCheckedAt()), toZonedDateTime(removed.getLastCheckedAt()));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
     void removeNonExistingTest() {
         Link link = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -61,7 +113,6 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
-    @DirtiesContext
     void testConnectLinkToChat() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -73,7 +124,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .build();
         Link insertedLink1 = linkRepository.add(link1);
         Link insertedLink2 = linkRepository.add(link2);
-        Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
+        Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();;
         chatRepository.add(chat);
 
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
@@ -85,7 +136,6 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
-    @DirtiesContext
     void testFindAllLinksByChatId() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -97,7 +147,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .build();
         Link insertedLink1 = linkRepository.add(link1);
         Link insertedLink2 = linkRepository.add(link2);
-        Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
+        Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();;
         chatRepository.add(chat);
 
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
@@ -110,7 +160,6 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
-    @DirtiesContext
     void testDisconnectLinkToChat() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -122,7 +171,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .build();
         Link insertedLink1 = linkRepository.add(link1);
         Link insertedLink2 = linkRepository.add(link2);
-        Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
+        Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();;
         chatRepository.add(chat);
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink2.getId());
@@ -135,7 +184,6 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
-    @DirtiesContext
     void testFindLinkByUrl() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -152,9 +200,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     }
 
     @Test
-    @Rollback
     @Transactional
-    @DirtiesContext
     void testGetChatIdsByLinkId() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -174,9 +220,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     }
 
     @Test
-    @Rollback
     @Transactional
-    @DirtiesContext
     void testUpdateLastCheckedTime() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
