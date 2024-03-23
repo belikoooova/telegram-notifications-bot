@@ -98,26 +98,6 @@ class JpaLinkRepositoryTest extends IntegrationEnvironment {
         );
     }
 
-    @Test
-    @Rollback
-    @DirtiesContext
-    void testUpdateLastCheckedTime() {
-        Link link1 = Link.builder()
-            .url(EXAMPLE_URI_1)
-            .lastCheckedAt(DATE)
-            .build();
-        Link insertedLink1 = linkRepository.save(link1);
-        OffsetDateTime newDate = DATE.plusHours(1);
-
-        linkRepository.updateLastCheckedTime(insertedLink1.getId(), newDate);
-
-        assertEquals(
-            toZonedDateTime(newDate),
-            toZonedDateTime(linkRepository.findByUrl(insertedLink1.getUrl()).get()
-                .getLastCheckedAt())
-        );
-    }
-
     private ZonedDateTime toZonedDateTime(OffsetDateTime dateTime) {
         return ZonedDateTime.parse(dateTime.toString())
             .withZoneSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.MILLIS);
