@@ -13,6 +13,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
+import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -200,6 +201,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     }
 
     @Test
+    @Rollback
     @Transactional
     void testGetChatIdsByLinkId() {
         Link link1 = Link.builder()
@@ -220,6 +222,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     }
 
     @Test
+    @Rollback
     @Transactional
     void testUpdateLastCheckedTime() {
         Link link1 = Link.builder()
