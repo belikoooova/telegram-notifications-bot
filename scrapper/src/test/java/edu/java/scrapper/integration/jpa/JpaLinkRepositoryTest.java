@@ -1,15 +1,12 @@
 package edu.java.scrapper.integration.jpa;
 
-import edu.java.scrapper.entity.Chat;
 import edu.java.scrapper.entity.Link;
-import edu.java.scrapper.repository.jdbc.JdbcChatRepository;
-import edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
 import edu.java.scrapper.repository.jpa.JpaChatRepository;
 import edu.java.scrapper.repository.jpa.JpaLinkRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import java.net.URI;
@@ -19,24 +16,18 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@DirtiesContext
 class JpaLinkRepositoryTest {
     private static final URI EXAMPLE_URI_1 = URI.create("http://example.com");
     private static final URI EXAMPLE_URI_2 = URI.create("http://example2.com");
     private static final OffsetDateTime DATE = OffsetDateTime.now();
     private static final int ADDED_LINKS_AMOUNT = 2;
-    private static final long EXAMPLE_ID_1 = 1;
-    private static final long EXAMPLE_ID_2 = 2;
 
     @Autowired
     private JpaLinkRepository linkRepository;
-    @Autowired
-    private JpaChatRepository chatRepository;
 
     @Test
     @Transactional
@@ -124,7 +115,7 @@ class JpaLinkRepositoryTest {
     }
 
     @Test
-    void testUpdateLastCheckedTime() throws InterruptedException {
+    void testUpdateLastCheckedTime() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
