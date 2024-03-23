@@ -5,9 +5,7 @@ import edu.java.bot.entity.chat.ChatState;
 import edu.java.bot.repository.jdbc.JdbcChatRepository;
 import edu.java.bot.service.chat.ChatService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
 public class JdbcChatService implements ChatService {
     private final JdbcChatRepository chatRepository;
@@ -17,6 +15,7 @@ public class JdbcChatService implements ChatService {
         chatRepository.add(
             Chat.builder()
                 .id(chatId)
+                .state(ChatState.NONE)
                 .build()
         );
     }

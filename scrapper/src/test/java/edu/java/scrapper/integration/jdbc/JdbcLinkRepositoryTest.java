@@ -1,7 +1,8 @@
-package edu.java.scrapper.integration;
+package edu.java.scrapper.integration.jdbc;
 
 import edu.java.scrapper.entity.Chat;
 import edu.java.scrapper.entity.Link;
+import edu.java.scrapper.integration.IntegrationEnvironment;
 import edu.java.scrapper.repository.jdbc.JdbcChatRepository;
 import edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
 import java.net.URI;
@@ -123,7 +124,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .build();
         Link insertedLink1 = linkRepository.add(link1);
         Link insertedLink2 = linkRepository.add(link2);
-        Chat chat = new Chat(EXAMPLE_ID_1);
+        Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
         chatRepository.add(chat);
 
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
@@ -146,7 +147,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .build();
         Link insertedLink1 = linkRepository.add(link1);
         Link insertedLink2 = linkRepository.add(link2);
-        Chat chat = new Chat(EXAMPLE_ID_1);
+        Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
         chatRepository.add(chat);
 
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
@@ -170,7 +171,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .build();
         Link insertedLink1 = linkRepository.add(link1);
         Link insertedLink2 = linkRepository.add(link2);
-        Chat chat = new Chat(EXAMPLE_ID_1);
+        Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
         chatRepository.add(chat);
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink2.getId());
@@ -206,9 +207,9 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .lastCheckedAt(DATE)
             .build();
         Link insertedLink1 = linkRepository.add(link1);
-        Chat chat1 = new Chat(EXAMPLE_ID_1);
+        Chat chat1 = Chat.builder().id(EXAMPLE_ID_1).build();
         chatRepository.add(chat1);
-        Chat chat2 = new Chat(EXAMPLE_ID_2);
+        Chat chat2 = Chat.builder().id(EXAMPLE_ID_2).build();
         chatRepository.add(chat2);
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
         linkRepository.connectLinkToChat(EXAMPLE_ID_2, insertedLink1.getId());

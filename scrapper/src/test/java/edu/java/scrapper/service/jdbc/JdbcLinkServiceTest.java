@@ -120,7 +120,7 @@ class JdbcLinkServiceTest {
     void listAllOldCheckedShouldReturnLinks() {
         Duration interval = Duration.ofHours(1);
         List<Link> expectedLinks =
-            Arrays.asList(new Link(), new Link()); // Assume Link objects are properly initialized
+            Arrays.asList(new Link(), new Link());
         when(linkRepository.findAllWithShitInterval(interval)).thenReturn(expectedLinks);
 
         Collection<Link> result = jdbcLinkService.listAllOldChecked(interval);

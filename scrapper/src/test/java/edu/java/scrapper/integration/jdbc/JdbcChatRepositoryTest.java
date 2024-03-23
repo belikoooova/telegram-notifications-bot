@@ -1,6 +1,7 @@
-package edu.java.scrapper.integration;
+package edu.java.scrapper.integration.jdbc;
 
 import edu.java.scrapper.entity.Chat;
+import edu.java.scrapper.integration.IntegrationEnvironment;
 import edu.java.scrapper.repository.jdbc.JdbcChatRepository;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Transactional
     @Rollback
     void addTest() {
-        Chat chat = new Chat(EXAMPLE_ID_1);
+        Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
 
         Chat inserted = chatRepository.add(chat);
 
@@ -39,8 +40,8 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Transactional
     @Rollback
     void findAllTest() {
-        Chat chat1 = new Chat(EXAMPLE_ID_1);
-        Chat chat2 = new Chat(EXAMPLE_ID_2);
+        Chat chat1 = Chat.builder().id(EXAMPLE_ID_1).build();
+        Chat chat2 = Chat.builder().id(EXAMPLE_ID_2).build();
         chatRepository.add(chat1);
         chatRepository.add(chat2);
 
@@ -53,7 +54,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Transactional
     @Rollback
     void removeExistingTest() {
-        Chat chat = new Chat(EXAMPLE_ID_1);
+        Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
         Chat inserted = chatRepository.add(chat);
 
         Chat removed = chatRepository.remove(inserted);
@@ -66,7 +67,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Transactional
     @Rollback
     void removeNonExistingTest() {
-        Chat chat = new Chat(EXAMPLE_ID_1);
+        Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
         Chat inserted = chatRepository.add(chat);
         chatRepository.remove(inserted);
 
