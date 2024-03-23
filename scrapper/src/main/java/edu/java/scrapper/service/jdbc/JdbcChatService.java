@@ -8,9 +8,7 @@ import edu.java.scrapper.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
 public class JdbcChatService implements ChatService {
     private final JdbcChatRepository chatRepository;

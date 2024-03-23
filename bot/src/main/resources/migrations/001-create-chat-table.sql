@@ -24,5 +24,17 @@ create table chat_state
                                                 constraint pk_chat
                                                     primary key,
     state           ChatState                   not null
-        default 'NONE'
+                                                    default 'NONE'
+);
+
+--changeset belikoooova:3
+drop table chat_state;
+
+create table chat_state
+(
+    id              bigserial                   not null
+        constraint pk_chat
+            primary key,
+    state           varchar(255)                not null
+                                                    default 'NONE'
 );

@@ -34,3 +34,6 @@ add column last_updated_at timestamp with time zone;
 --changeset belikoooova:5
 alter table link
 drop column last_updated_at;
+
+--changeset belikoooova:6
+create sequence link_seq increment by 1 minvalue 1 start with 1;

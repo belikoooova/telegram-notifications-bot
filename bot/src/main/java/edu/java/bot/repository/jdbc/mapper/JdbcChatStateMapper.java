@@ -1,4 +1,4 @@
-package edu.java.bot.service.chat.jdbc.mapper;
+package edu.java.bot.repository.jdbc.mapper;
 
 import edu.java.bot.entity.chat.ChatState;
 import java.sql.ResultSet;

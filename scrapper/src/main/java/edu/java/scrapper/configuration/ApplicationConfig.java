@@ -1,5 +1,6 @@
 package edu.java.scrapper.configuration;
 
+import edu.java.scrapper.configuration.database.AccessType;
 import jakarta.validation.constraints.NotNull;
 import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -11,7 +12,8 @@ public record ApplicationConfig(
     @NotNull
     LinkUpdaterSchedulerRecord linkUpdaterScheduler,
     BaseUrl baseUrl,
-    Timeout timeout
+    Timeout timeout,
+    AccessType databaseAccessType
 ) {
     public record LinkUpdaterSchedulerRecord(@NotNull Duration interval) {
     }

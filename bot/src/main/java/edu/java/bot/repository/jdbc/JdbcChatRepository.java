@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 public class JdbcChatRepository {
-    private static final String ADD_QUERY = "insert into chat_state (id, state) values (?, ?::chatstate) returning *";
+    private static final String ADD_QUERY = "insert into chat_state (id, state) values (?, ?) returning *";
     private static final String DELETE_QUERY = "delete from chat_state where id=? returning *";
     private static final String FIND_ALL_QUERY = "select * from chat_state";
-    private static final String SET_CHAT_STATE = "update chat_state cs set state=?::chatstate where cs.id=?";
+    private static final String SET_CHAT_STATE = "update chat_state cs set state=? where cs.id=?";
     private static final String GET_CHAT_STATE = "select state from chat_state where id=?";
 
     private final RowMapper<Chat> mapper;
@@ -28,7 +28,7 @@ public class JdbcChatRepository {
             ADD_QUERY,
             mapper,
             chat.getId(),
-            chat.getState().name()
+            ChatState.NONE.name()
         );
     }
 

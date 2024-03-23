@@ -6,15 +6,16 @@ import edu.java.scrapper.exception.UnsupportedResourceException;
 import edu.java.scrapper.service.LinkService;
 import edu.java.scrapper.service.client.BotClient;
 import edu.java.scrapper.service.client.WebsiteClient;
+import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @SuppressWarnings("RegexpSinglelineJava")
-@EnableScheduling
+@Component
 @RequiredArgsConstructor
 public class LinkUpdater {
     private final ApplicationConfig applicationConfig;
@@ -22,7 +23,7 @@ public class LinkUpdater {
     private final List<WebsiteClient> clients;
     private final BotClient botClient;
 
-    @Scheduled(fixedDelayString = "${app.scheduler.interval}")
+    @Scheduled(fixedDelayString = "PT${app.link-updater-scheduler.interval}")
     public void update() {
         linkService.listAllOldChecked(applicationConfig.linkUpdaterScheduler().interval())
             .forEach(link -> {
@@ -36,6 +37,7 @@ public class LinkUpdater {
                         break;
                     }
                 }
+                linkService.updateLastCheckedTime(link, OffsetDateTime.now());
                 if (!isHandled) {
                     throw new UnsupportedResourceException();
                 }
