@@ -44,6 +44,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void addTest() {
         Link link = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -60,6 +61,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void findAllTest() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -80,6 +82,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void removeExistingTest() {
         Link link = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -97,6 +100,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void removeNonExistingTest() {
         Link link = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -114,6 +118,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void testConnectLinkToChat() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -137,6 +142,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void testFindAllLinksByChatId() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -161,6 +167,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void testDisconnectLinkToChat() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -185,6 +192,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void testFindLinkByUrl() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -201,7 +209,9 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     }
 
     @Test
+    @Rollback
     @Transactional
+    @DirtiesContext
     void testGetChatIdsByLinkId() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -221,7 +231,9 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     }
 
     @Test
+    @Rollback
     @Transactional
+    @DirtiesContext
     void testUpdateLastCheckedTime() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)

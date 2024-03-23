@@ -26,6 +26,7 @@ class JpaChatRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void addTest() {
         Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
 
@@ -37,6 +38,7 @@ class JpaChatRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void findAllTest() {
         Chat chat1 = Chat.builder().id(EXAMPLE_ID_1).build();
         Chat chat2 = Chat.builder().id(EXAMPLE_ID_2).build();
@@ -51,6 +53,7 @@ class JpaChatRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void removeExistingTest() {
         Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
         Chat inserted = chatRepository.save(chat);
@@ -63,6 +66,7 @@ class JpaChatRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void removeNonExistingTest() {
         Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
         Chat inserted = chatRepository.save(chat);

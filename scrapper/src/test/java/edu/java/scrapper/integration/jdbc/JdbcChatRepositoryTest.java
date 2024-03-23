@@ -17,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class JdbcChatRepositoryTest extends IntegrationEnvironment {
-    private static final long EXAMPLE_ID_1 = 1;
-    private static final long EXAMPLE_ID_2 = 2;
+    private static final long EXAMPLE_ID_1 = 11;
+    private static final long EXAMPLE_ID_2 = 22;
     private static final int ADDED_CHATS_AMOUNT = 2;
 
     @Autowired
@@ -29,6 +29,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void addTest() {
         Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
 
@@ -40,6 +41,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void findAllTest() {
         Chat chat1 = Chat.builder().id(EXAMPLE_ID_1).build();
         Chat chat2 = Chat.builder().id(EXAMPLE_ID_2).build();
@@ -54,6 +56,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void removeExistingTest() {
         Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
         Chat inserted = chatRepository.add(chat);
@@ -67,6 +70,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
+    @DirtiesContext
     void removeNonExistingTest() {
         Chat chat = Chat.builder().id(EXAMPLE_ID_1).build();
         Chat inserted = chatRepository.add(chat);
