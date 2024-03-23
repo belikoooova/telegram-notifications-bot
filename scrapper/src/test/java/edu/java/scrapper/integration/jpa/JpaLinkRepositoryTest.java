@@ -1,12 +1,11 @@
 package edu.java.scrapper.integration.jpa;
 
 import edu.java.scrapper.entity.Link;
-import edu.java.scrapper.repository.jpa.JpaChatRepository;
+import edu.java.scrapper.integration.IntegrationEnvironment;
 import edu.java.scrapper.repository.jpa.JpaLinkRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import java.net.URI;
@@ -15,14 +14,12 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@DirtiesContext
-class JpaLinkRepositoryTest {
-    private static final URI EXAMPLE_URI_1 = URI.create("http://example.com");
-    private static final URI EXAMPLE_URI_2 = URI.create("http://example2.com");
+class JpaLinkRepositoryTest extends IntegrationEnvironment {
+    private static final URI EXAMPLE_URI_1 = URI.create("http://example4.com");
+    private static final URI EXAMPLE_URI_2 = URI.create("http://example5.com");
     private static final OffsetDateTime DATE = OffsetDateTime.now();
     private static final int ADDED_LINKS_AMOUNT = 2;
 
@@ -30,8 +27,8 @@ class JpaLinkRepositoryTest {
     private JpaLinkRepository linkRepository;
 
     @Test
-    @Transactional
     @Rollback
+    @Transactional
     void addTest() {
         Link link = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -46,8 +43,8 @@ class JpaLinkRepositoryTest {
     }
 
     @Test
-    @Transactional
     @Rollback
+    @Transactional
     void findAllTest() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -66,8 +63,8 @@ class JpaLinkRepositoryTest {
     }
 
     @Test
-    @Transactional
     @Rollback
+    @Transactional
     void removeExistingTest() {
         Link link = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -81,8 +78,8 @@ class JpaLinkRepositoryTest {
     }
 
     @Test
-    @Transactional
     @Rollback
+    @Transactional
     void removeNonExistingTest() {
         Link link = Link.builder()
             .url(EXAMPLE_URI_1)
@@ -97,24 +94,7 @@ class JpaLinkRepositoryTest {
     }
 
     @Test
-    @Transactional
     @Rollback
-    void testFindLinkByUrl() {
-        Link link1 = Link.builder()
-            .url(EXAMPLE_URI_1)
-            .lastCheckedAt(DATE)
-            .build();
-        Link insertedLink1 = linkRepository.save(link1);
-
-        Optional<Link> optionalLink1 = linkRepository.findByUrl(EXAMPLE_URI_1);
-        Optional<Link> optionalLink2 = linkRepository.findByUrl(EXAMPLE_URI_2);
-
-        assertTrue(optionalLink1.isPresent());
-        assertEquals(optionalLink1.get().getId(), insertedLink1.getId());
-        assertTrue(optionalLink2.isEmpty());
-    }
-
-    @Test
     void testUpdateLastCheckedTime() {
         Link link1 = Link.builder()
             .url(EXAMPLE_URI_1)

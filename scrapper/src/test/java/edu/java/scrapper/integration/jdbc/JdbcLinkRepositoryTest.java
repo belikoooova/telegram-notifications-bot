@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-@DirtiesContext
 class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     private static final URI EXAMPLE_URI_1 = URI.create("http://example.com");
     private static final URI EXAMPLE_URI_2 = URI.create("http://example2.com");

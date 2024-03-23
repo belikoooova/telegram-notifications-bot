@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-@DirtiesContext
 class JdbcChatRepositoryTest extends IntegrationEnvironment {
     private static final long EXAMPLE_ID_1 = 1;
     private static final long EXAMPLE_ID_2 = 2;

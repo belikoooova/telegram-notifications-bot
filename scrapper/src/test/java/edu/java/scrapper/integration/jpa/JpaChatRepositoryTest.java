@@ -1,6 +1,7 @@
 package edu.java.scrapper.integration.jpa;
 
 import edu.java.scrapper.entity.Chat;
+import edu.java.scrapper.integration.IntegrationEnvironment;
 import edu.java.scrapper.repository.jpa.JpaChatRepository;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-@DirtiesContext
-class JpaChatRepositoryTest {
+class JpaChatRepositoryTest extends IntegrationEnvironment {
     private static final long EXAMPLE_ID_1 = 1;
     private static final long EXAMPLE_ID_2 = 2;
     private static final int ADDED_CHATS_AMOUNT = 2;
