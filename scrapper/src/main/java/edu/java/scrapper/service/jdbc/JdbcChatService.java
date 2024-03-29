@@ -2,12 +2,10 @@ package edu.java.scrapper.service.jdbc;
 
 import edu.java.scrapper.entity.Chat;
 import edu.java.scrapper.exception.ChatAlreadyExistsException;
-import edu.java.scrapper.exception.NoSuchChatException;
 import edu.java.scrapper.repository.jdbc.JdbcChatRepository;
 import edu.java.scrapper.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service

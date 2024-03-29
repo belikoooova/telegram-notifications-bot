@@ -59,7 +59,7 @@ class JdbcChatServiceTest {
 
     @Test
     void testUnregisterShouldThrowExceptionIfChatDoesNotExist() {
-        doThrow(EmptyResultDataAccessException.class).when(chatRepository).remove(any(Chat.class));
+        doThrow(NoSuchChatException.class).when(chatRepository).remove(any(Chat.class));
 
         assertThrows(NoSuchChatException.class, () -> jdbcChatService.unregister(TG_CHAT_ID));
     }

@@ -12,13 +12,14 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
+@SuppressWarnings({"MultipleStringLiterals"})
 public class JdbcLinkRepository {
     private static final String ADD_QUERY = """
         insert into link (url, last_checked_at)
@@ -26,48 +27,48 @@ public class JdbcLinkRepository {
         returning *
         """;
     private static final String DELETE_QUERY = """
-    delete from link
-    where id=:id returning *
-    """;
+        delete from link
+        where id=:id returning *
+        """;
 
     private static final String FIND_ALL_QUERY = """
-    select * from link
-    """;
+        select * from link
+        """;
 
     private static final String FIND_ALL_LINKS_BY_CHAT_ID = """
-    select * from link l
-    join chat_link cl on l.id=cl.link_id
-    where cl.chat_id=:chatId
-    """;
+        select * from link l
+        join chat_link cl on l.id=cl.link_id
+        where cl.chat_id=:chatId
+        """;
 
     private static final String FIND_ALL_WITH_SHIFT_INTERVAL = """
-    select * from link
-    where last_checked_at < :newDateTime
-    """;
+        select * from link
+        where last_checked_at < :newDateTime
+        """;
 
     private static final String CONNECT_LINK_TO_CHAT = """
-    insert into chat_link (link_id, chat_id)
-    values (:linkId, :chatId)
-    """;
+        insert into chat_link (link_id, chat_id)
+        values (:linkId, :chatId)
+        """;
 
     private static final String DISCONNECT_LINK_FROM_CHAT = """
-    delete from chat_link
-    where link_id=:linkId and chat_id=:chatId
-    """;
+        delete from chat_link
+        where link_id=:linkId and chat_id=:chatId
+        """;
 
     private static final String FIND_BY_URL = """
-    select * from link
-    where url=:url
-    """;
+        select * from link
+        where url=:url
+        """;
 
     private static final String FIND_CHAT_IDS_BY_LINK_ID = """
-    select cl.chat_id from chat_link cl
-    where cl.link_id=:linkId
-    """;
+        select cl.chat_id from chat_link cl
+        where cl.link_id=:linkId
+        """;
 
     private static final String UPDATE_LAST_CHECKED_TIME = """
-    update link set last_checked_at=:dateTime where id=:id
-    """;
+        update link set last_checked_at=:dateTime where id=:id
+        """;
 
     private static final RowMapper<Link> MAPPER = new BeanPropertyRowMapper<>(Link.class);
 
@@ -141,7 +142,11 @@ public class JdbcLinkRepository {
     public List<Long> getChatIdsByLinkId(Long linkId) {
         Map<String, Object> params = new HashMap<>();
         params.put("linkId", linkId);
-        return namedParameterJdbcTemplate.query(FIND_CHAT_IDS_BY_LINK_ID, params, (rs, rowNum) -> rs.getLong("chat_id"));
+        return namedParameterJdbcTemplate.query(
+            FIND_CHAT_IDS_BY_LINK_ID,
+            params,
+            (rs, rowNum) -> rs.getLong("chat_id")
+        );
     }
 
     @Transactional
