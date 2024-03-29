@@ -9,8 +9,16 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
 public record ApplicationConfig(
     @NotNull
-    LinkUpdaterSchedulerRecord linkUpdaterScheduler
+    LinkUpdaterSchedulerRecord linkUpdaterScheduler,
+    BaseUrl baseUrl,
+    Timeout clientTimeout
 ) {
     public record LinkUpdaterSchedulerRecord(@NotNull Duration interval) {
+    }
+
+    public record BaseUrl(String gitHub, String stackOverflow, String bot) {
+    }
+
+    public record Timeout(int minutes) {
     }
 }

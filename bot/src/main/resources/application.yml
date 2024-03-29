@@ -1,10 +1,8 @@
 app:
-  telegram-token: ${BOT_TOKEN}
-
-scrapper:
-  base:
-    url: "http://localhost:8080/"
-  timeout:
+  telegram-token: ${BOT_TOKEN:"some_token"}
+  base-url:
+    scrapper: ${SCRAPPER_BASE_URL:"http://localhost:8080/"}
+  client-timeout:
     minutes: 5
 
 spring:
@@ -12,8 +10,12 @@ spring:
     name: bot
   jackson:
     time-zone: UTC
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:54321/bot}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  liquibase:
+    enabled: false
 
 server:
   port: 8090

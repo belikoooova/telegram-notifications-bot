@@ -1,13 +1,13 @@
-package edu.java.bot.processor;
+package edu.java.bot.service;
 
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.service.command.Command;
+import edu.java.bot.service.processor.UserMessageProcessor;
 import java.util.Arrays;
 import java.util.List;
-import edu.java.bot.service.processor.UserMessageProcessor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,14 +18,14 @@ import static org.mockito.Mockito.when;
 
 class UserMessageProcessorTest {
     private static final long CHAT_ID = 123L;
-    private Command commandOne = mock(Command.class);
-    private Command commandTwo = mock(Command.class);
+    private final Command commandOne = mock(Command.class);
+    private final Command commandTwo = mock(Command.class);
 
     @InjectMocks
     private UserMessageProcessor userMessageProcessor;
-    private Update update = mock(Update.class);
-    private Message message = mock(Message.class);
-    private Chat chat = mock(Chat.class);
+    private final Update update = mock(Update.class);
+    private final Message message = mock(Message.class);
+    private final Chat chat = mock(Chat.class);
 
     @BeforeEach
     void setUp() {

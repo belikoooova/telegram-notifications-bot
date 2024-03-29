@@ -61,6 +61,5 @@ volumes:
   bot-postgresql:
   scrapper-postgresql:
 
-
 networks:
   backend: { }

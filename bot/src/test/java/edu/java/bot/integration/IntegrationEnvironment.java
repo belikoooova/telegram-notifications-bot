@@ -1,5 +1,8 @@
 package edu.java.bot.integration;
 
+import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import liquibase.Contexts;
 import liquibase.LabelExpression;
 import liquibase.Liquibase;
@@ -14,10 +17,6 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.DriverManager;
-
 @Testcontainers
 public abstract class IntegrationEnvironment {
     private static final Path MIGRATIONS_PATH = Path.of(System.getProperty("user.dir"))
@@ -28,7 +27,7 @@ public abstract class IntegrationEnvironment {
 
     static {
         POSTGRES = new PostgreSQLContainer<>("postgres:16")
-            .withDatabaseName("scrapper")
+            .withDatabaseName("bot")
             .withUsername("postgres")
             .withPassword("postgres");
         POSTGRES.start();
