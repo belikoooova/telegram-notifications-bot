@@ -43,7 +43,6 @@ public class LinkController {
                 .size(links.size())
                 .build()
         );
-        //return ResponseEntity.ok(serviceDepr.getAllLinks(chatId));
     }
 
     @PostMapping("/{chatId}")

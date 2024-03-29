@@ -22,7 +22,7 @@ public class ClientConfig {
         return new GitHubClient(
             linkService, webClientBuilder,
             applicationConfig.baseUrl().gitHub(),
-            applicationConfig.timeout().minutes()
+            applicationConfig.clientTimeout().minutes()
         );
     }
 
@@ -33,7 +33,7 @@ public class ClientConfig {
         return new StackOverflowClient(
             linkService, webClientBuilder,
             applicationConfig.baseUrl().stackOverflow(),
-            applicationConfig.timeout().minutes()
+            applicationConfig.clientTimeout().minutes()
         );
     }
 
@@ -44,7 +44,7 @@ public class ClientConfig {
         return new BotClient(
             webClientBuilder,
             applicationConfig.baseUrl().bot(),
-            applicationConfig.timeout().minutes()
+            applicationConfig.clientTimeout().minutes()
         );
     }
 }

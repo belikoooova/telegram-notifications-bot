@@ -32,16 +32,16 @@ class JdbcChatServiceTest {
     void testRegisterShouldAddNewChat() {
         Chat chat = new Chat();
         chat.setId(TG_CHAT_ID);
-        when(chatRepository.add(any(Chat.class))).thenReturn(chat);
+        when(chatRepository.save(any(Chat.class))).thenReturn(chat);
 
         jdbcChatService.register(TG_CHAT_ID);
 
-        verify(chatRepository).add(any(Chat.class));
+        verify(chatRepository).save(any(Chat.class));
     }
 
     @Test
     void testRegisterShouldThrowExceptionOnDuplicateKey() {
-        doThrow(DuplicateKeyException.class).when(chatRepository).add(any(Chat.class));
+        doThrow(DuplicateKeyException.class).when(chatRepository).save(any(Chat.class));
 
         assertThrows(ChatAlreadyExistsException.class, () -> jdbcChatService.register(TG_CHAT_ID));
     }

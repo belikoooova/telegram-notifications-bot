@@ -18,7 +18,7 @@ public class JdbcChatService implements ChatService {
     @Override
     public void register(long tgChatId) {
         try {
-            chatRepository.add(
+            chatRepository.save(
                 Chat.builder()
                     .id(tgChatId)
                     .build()
@@ -30,14 +30,10 @@ public class JdbcChatService implements ChatService {
 
     @Override
     public void unregister(long tgChatId) {
-        try {
-            chatRepository.remove(
-                Chat.builder()
-                    .id(tgChatId)
-                    .build()
-            );
-        } catch (EmptyResultDataAccessException ignored) {
-            throw new NoSuchChatException(tgChatId);
-        }
+        chatRepository.remove(
+            Chat.builder()
+                .id(tgChatId)
+                .build()
+        );
     }
 }

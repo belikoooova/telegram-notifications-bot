@@ -53,7 +53,7 @@ class JdbcLinkServiceTest {
     @Test
     void addShouldConnectLinkToChat() {
         when(linkRepository.findLinkByUrl(URL)).thenReturn(Optional.of(link));
-        when(linkRepository.add(any(Link.class))).thenReturn(link);
+        when(linkRepository.save(any(Link.class))).thenReturn(link);
 
         Link result = jdbcLinkService.add(ID, URL);
 

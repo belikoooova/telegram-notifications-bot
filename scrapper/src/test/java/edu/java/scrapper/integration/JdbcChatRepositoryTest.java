@@ -30,7 +30,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     void addTest() {
         Chat chat = new Chat(EXAMPLE_ID_1);
 
-        Chat inserted = chatRepository.add(chat);
+        Chat inserted = chatRepository.save(chat);
 
         assertEquals(chat.getId(), inserted.getId());
     }
@@ -41,8 +41,8 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     void findAllTest() {
         Chat chat1 = new Chat(EXAMPLE_ID_1);
         Chat chat2 = new Chat(EXAMPLE_ID_2);
-        chatRepository.add(chat1);
-        chatRepository.add(chat2);
+        chatRepository.save(chat1);
+        chatRepository.save(chat2);
 
         List<Chat> receivedChats = chatRepository.findAll();
 
@@ -54,7 +54,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Rollback
     void removeExistingTest() {
         Chat chat = new Chat(EXAMPLE_ID_1);
-        Chat inserted = chatRepository.add(chat);
+        Chat inserted = chatRepository.save(chat);
 
         Chat removed = chatRepository.remove(inserted);
 
@@ -67,7 +67,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Rollback
     void removeNonExistingTest() {
         Chat chat = new Chat(EXAMPLE_ID_1);
-        Chat inserted = chatRepository.add(chat);
+        Chat inserted = chatRepository.save(chat);
         chatRepository.remove(inserted);
 
         assertThrows(

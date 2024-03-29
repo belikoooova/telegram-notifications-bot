@@ -48,7 +48,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .lastCheckedAt(DATE)
             .build();
 
-        Link inserted = linkRepository.add(link);
+        Link inserted = linkRepository.save(link);
 
         assertNotNull(inserted.getId());
         assertEquals(link.getUrl(), inserted.getUrl());
@@ -67,8 +67,8 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .url(EXAMPLE_URI_2)
             .lastCheckedAt(DATE)
             .build();
-        linkRepository.add(link1);
-        linkRepository.add(link2);
+        linkRepository.save(link1);
+        linkRepository.save(link2);
 
         List<Link> receivedLinks = linkRepository.findAll();
 
@@ -83,7 +83,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
             .build();
-        Link inserted = linkRepository.add(link);
+        Link inserted = linkRepository.save(link);
 
         Link removed = linkRepository.remove(inserted);
 
@@ -100,7 +100,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
             .build();
-        Link inserted = linkRepository.add(link);
+        Link inserted = linkRepository.save(link);
         linkRepository.remove(inserted);
 
         assertThrows(
@@ -121,10 +121,10 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .url(EXAMPLE_URI_2)
             .lastCheckedAt(DATE)
             .build();
-        Link insertedLink1 = linkRepository.add(link1);
-        Link insertedLink2 = linkRepository.add(link2);
+        Link insertedLink1 = linkRepository.save(link1);
+        Link insertedLink2 = linkRepository.save(link2);
         Chat chat = new Chat(EXAMPLE_ID_1);
-        chatRepository.add(chat);
+        chatRepository.save(chat);
 
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink2.getId());
@@ -144,10 +144,10 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .url(EXAMPLE_URI_2)
             .lastCheckedAt(DATE)
             .build();
-        Link insertedLink1 = linkRepository.add(link1);
-        Link insertedLink2 = linkRepository.add(link2);
+        Link insertedLink1 = linkRepository.save(link1);
+        Link insertedLink2 = linkRepository.save(link2);
         Chat chat = new Chat(EXAMPLE_ID_1);
-        chatRepository.add(chat);
+        chatRepository.save(chat);
 
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink2.getId());
@@ -168,10 +168,10 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .url(EXAMPLE_URI_2)
             .lastCheckedAt(DATE)
             .build();
-        Link insertedLink1 = linkRepository.add(link1);
-        Link insertedLink2 = linkRepository.add(link2);
+        Link insertedLink1 = linkRepository.save(link1);
+        Link insertedLink2 = linkRepository.save(link2);
         Chat chat = new Chat(EXAMPLE_ID_1);
-        chatRepository.add(chat);
+        chatRepository.save(chat);
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink2.getId());
 
@@ -188,7 +188,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
             .build();
-        Link insertedLink1 = linkRepository.add(link1);
+        Link insertedLink1 = linkRepository.save(link1);
 
         Optional<Link> optionalLink1 = linkRepository.findLinkByUrl(EXAMPLE_URI_1);
         Optional<Link> optionalLink2 = linkRepository.findLinkByUrl(EXAMPLE_URI_2);
@@ -205,11 +205,11 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
             .build();
-        Link insertedLink1 = linkRepository.add(link1);
+        Link insertedLink1 = linkRepository.save(link1);
         Chat chat1 = new Chat(EXAMPLE_ID_1);
-        chatRepository.add(chat1);
+        chatRepository.save(chat1);
         Chat chat2 = new Chat(EXAMPLE_ID_2);
-        chatRepository.add(chat2);
+        chatRepository.save(chat2);
         linkRepository.connectLinkToChat(EXAMPLE_ID_1, insertedLink1.getId());
         linkRepository.connectLinkToChat(EXAMPLE_ID_2, insertedLink1.getId());
 
@@ -225,7 +225,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             .url(EXAMPLE_URI_1)
             .lastCheckedAt(DATE)
             .build();
-        Link insertedLink1 = linkRepository.add(link1);
+        Link insertedLink1 = linkRepository.save(link1);
         OffsetDateTime newDate = DATE.plusHours(1);
 
         linkRepository.updateLastCheckedTime(insertedLink1, newDate);

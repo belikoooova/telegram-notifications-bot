@@ -11,7 +11,7 @@ public record ApplicationConfig(
     @NotNull
     LinkUpdaterSchedulerRecord linkUpdaterScheduler,
     BaseUrl baseUrl,
-    Timeout timeout
+    Timeout clientTimeout
 ) {
     public record LinkUpdaterSchedulerRecord(@NotNull Duration interval) {
     }

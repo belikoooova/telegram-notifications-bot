@@ -8,9 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-public class UpdateExceptionHandler {
+public class ResourceUpdatingExceptionHandler {
     private static final String INVALID_LINK = "Error while trying to request resource";
-    private static final String UNSUPPORTED_RESOURCE = "This recource is uncupported";
+    private static final String UNSUPPORTED_RESOURCE = "This resource is unsupported";
 
     @ExceptionHandler(InvalidLinkException.class)
     public ResponseEntity<ApiErrorResponse> handleInvalidLinkException(InvalidLinkException e) {

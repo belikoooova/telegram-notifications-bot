@@ -2,7 +2,7 @@ app:
   telegram-token: ${BOT_TOKEN:"some_token"}
   base-url:
     scrapper: ${SCRAPPER_BASE_URL:"http://localhost:8080/"}
-  timeout:
+  client-timeout:
     minutes: 5
 
 spring:

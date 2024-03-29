@@ -2,7 +2,7 @@ package edu.java.bot.integration;
 
 import edu.java.bot.entity.chat.Chat;
 import edu.java.bot.entity.chat.ChatState;
-import edu.java.bot.repository.jdbc.JdbcChatRepository;
+import edu.java.bot.repository.jdbc.JdbcChatStateRepository;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +15,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-class JdbcChatRepositoryTest extends IntegrationEnvironment {
+class JdbcChatStateRepositoryTest extends IntegrationEnvironment {
     private static final long EXAMPLE_ID_1 = 1;
     private static final long EXAMPLE_ID_2 = 2;
     private static final int ADDED_CHATS_AMOUNT = 2;
 
     @Autowired
-    private JdbcChatRepository chatRepository;
+    private JdbcChatStateRepository chatRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -31,7 +31,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     void addTest() {
         Chat chat = new Chat(EXAMPLE_ID_1);
 
-        Chat inserted = chatRepository.add(chat);
+        Chat inserted = chatRepository.save(chat);
 
         assertEquals(chat.getId(), inserted.getId());
         assertEquals(ChatState.NONE, inserted.getState());
@@ -43,8 +43,8 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     void findAllTest() {
         Chat chat1 = new Chat(EXAMPLE_ID_1);
         Chat chat2 = new Chat(EXAMPLE_ID_2);
-        chatRepository.add(chat1);
-        chatRepository.add(chat2);
+        chatRepository.save(chat1);
+        chatRepository.save(chat2);
 
         List<Chat> receivedChats = chatRepository.findAll();
 
@@ -56,7 +56,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Rollback
     void removeExistingTest() {
         Chat chat = new Chat(EXAMPLE_ID_1);
-        Chat inserted = chatRepository.add(chat);
+        Chat inserted = chatRepository.save(chat);
 
         Chat removed = chatRepository.remove(inserted);
 
@@ -69,7 +69,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Rollback
     void removeNonExistingTest() {
         Chat chat = new Chat(EXAMPLE_ID_1);
-        Chat inserted = chatRepository.add(chat);
+        Chat inserted = chatRepository.save(chat);
         chatRepository.remove(inserted);
 
         assertThrows(
@@ -83,7 +83,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Rollback
     void testGetChatState() {
         Chat chat = new Chat(EXAMPLE_ID_1);
-        Chat inserted = chatRepository.add(chat);
+        Chat inserted = chatRepository.save(chat);
 
         ChatState result = chatRepository.getChatState(inserted.getId());
 
@@ -95,7 +95,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Rollback
     void testSetChatState() {
         Chat chat = new Chat(EXAMPLE_ID_1);
-        Chat inserted = chatRepository.add(chat);
+        Chat inserted = chatRepository.save(chat);
         chatRepository.setChatState(chat.getId(), ChatState.AWAITING_TRACK_URL);
 
         ChatState result = chatRepository.getChatState(inserted.getId());

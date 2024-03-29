@@ -19,7 +19,7 @@ public class ClientConfig {
             webClientBuilder,
             applicationConfig.baseUrl().scrapper(),
 
-            applicationConfig.timeout().minutes()
+            applicationConfig.clientTimeout().minutes()
         );
     }
 }

@@ -2,7 +2,7 @@ package edu.java.bot.service;
 
 import edu.java.bot.entity.chat.Chat;
 import edu.java.bot.entity.chat.ChatState;
-import edu.java.bot.repository.jdbc.JdbcChatRepository;
+import edu.java.bot.repository.jdbc.JdbcChatStateRepository;
 import edu.java.bot.service.chat.jdbc.JdbcChatService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class JdbcChatServiceTest {
     @Mock
-    private JdbcChatRepository chatRepository;
+    private JdbcChatStateRepository chatRepository;
 
     @InjectMocks
     private JdbcChatService chatService;
@@ -29,11 +29,11 @@ class JdbcChatServiceTest {
     void testRegisterShouldAddNewChat() {
         Chat chat = new Chat();
         chat.setId(CHAT_ID);
-        when(chatRepository.add(any(Chat.class))).thenReturn(chat);
+        when(chatRepository.save(any(Chat.class))).thenReturn(chat);
 
         chatService.addEmptyChatWithId(CHAT_ID);
 
-        verify(chatRepository).add(any(Chat.class));
+        verify(chatRepository).save(any(Chat.class));
     }
 
     @Test

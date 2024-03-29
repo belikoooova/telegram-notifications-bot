@@ -2,7 +2,7 @@ package edu.java.bot.service.chat.jdbc;
 
 import edu.java.bot.entity.chat.Chat;
 import edu.java.bot.entity.chat.ChatState;
-import edu.java.bot.repository.jdbc.JdbcChatRepository;
+import edu.java.bot.repository.jdbc.JdbcChatStateRepository;
 import edu.java.bot.service.chat.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class JdbcChatService implements ChatService {
-    private final JdbcChatRepository chatRepository;
+    private final JdbcChatStateRepository chatRepository;
 
     @Override
     public void addEmptyChatWithId(Long chatId) {
-        chatRepository.add(
+        chatRepository.save(
             Chat.builder()
                 .id(chatId)
                 .build()

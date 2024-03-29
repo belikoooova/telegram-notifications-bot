@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 public record ApplicationConfig(
     @NotEmpty
     String telegramToken,
-    Timeout timeout,
+    Timeout clientTimeout,
     BaseUrl baseUrl
 ) {
     public record Timeout(int minutes) {
