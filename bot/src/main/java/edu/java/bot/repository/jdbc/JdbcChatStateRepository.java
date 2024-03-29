@@ -64,7 +64,6 @@ public class JdbcChatStateRepository {
         Map<String, Object> params = new HashMap<>();
         params.put(STATE, state.name());
         params.put("id", chatId);
-
         namedParameterJdbcTemplate.update(
             SET_CHAT_STATE,
             params
