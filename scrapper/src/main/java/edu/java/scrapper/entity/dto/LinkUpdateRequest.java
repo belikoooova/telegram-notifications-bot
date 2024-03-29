@@ -15,5 +15,5 @@ public class LinkUpdateRequest {
     private final Long id;
     private final URI url;
     private final String description;
-    private final List<Long> tgChatIds;
+    private List<Long> tgChatIds;
 }

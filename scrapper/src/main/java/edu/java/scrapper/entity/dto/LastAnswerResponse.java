@@ -6,18 +6,13 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.util.List;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record QuestionResponse(
-    List<ItemResponse> items
+public record LastAnswerResponse(
+    List<Answer> items
 ) {
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public record ItemResponse(
-        Long questionId,
+    public record Answer(
         @JsonProperty("creation_date")
-        Long creationDateSeconds,
-        @JsonProperty("last_activity_date")
-        Long lastActivityDateSeconds,
-        @JsonProperty("last_edit_date")
-        Long lastEditDateSeconds
+        Long creationDateSeconds
     ) {
     }
 }
